@@ -4,7 +4,7 @@ import { DayTiler } from "@/core/tilers";
 import { useTime } from "@/providers/temporal";
 import { ScrollSync } from "@/core/scroll-sync";
 
-import styles from "./styles.module.scss";
+import s from "./styles.module.scss";
 
 export interface ColumnGridProps<
   TileEventData,
@@ -26,11 +26,19 @@ export interface ColumnGridProps<
   columns: Array<{
     id: number | string;
     date: Date;
-    header: { data: HeaderData; attributes?: Record<string, any> };
+    header: { data: HeaderData; attributes?: Record<string, unknown> };
     events: Array<CalendarEvent<TileEventData>>;
     backgroundEvents: Array<BackgroundEvent<BackgroundEventData>>;
-    attributes?: Record<string, any>;
+    attributes?: Record<string, unknown>;
   }>;
+  renderHeaderItem: (headerData: HeaderData) => React.ReactNode;
+  renderTimeSlot: (headerData: {
+    id: number;
+    startTime: Date;
+    endTime: Date;
+    backgroundEvents: BackgroundEvent<BackgroundEventData>[];
+  }) => React.ReactNode;
+  renderEventTile: (data: unknown) => React.ReactNode;
 }
 
 export function ColumnGrid<TileEventData, BackgroundEventData, HeaderData>(
@@ -163,10 +171,92 @@ export function ColumnGrid<TileEventData, BackgroundEventData, HeaderData>(
   }, []);
 
   return (
-    <div className={styles.columnGridLayout}>
-      <div className='corner'></div>
-      <div className='header'></div>
-      <div className='content'></div>
+    <div
+      className={s["column-grid-layout"]}
+      data-slots-count={computedConfig.totalSlots}
+      data-slot-height={props.config.slotHeight}
+      data-indicators-count={slotIndicators.length}
+    >
+      <div className={s["corner"]}></div>
+      <div className={s["header"]}>
+        <div className={s["header-items"]}>
+          {props.columns.map((column) => (
+            <div
+              key={column.id}
+              className={s["header-item"]}
+              {...column.attributes}
+            >
+              {props.renderHeaderItem(column.header.data)}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className={s["content"]}>
+        <div className={s["content-layout"]}>
+          <div className={s["time-indicators"]}>
+            {slotIndicators.map((indicator) => (
+              <div
+                className={s["time-indicator"]}
+                key={indicator.id}
+                data-is-hour={indicator.isHour}
+                data-scroll-into-view={indicator.scrollIntoView}
+              >
+                <span className={s["time-indicator__label"]}>
+                  {indicator.label}
+                </span>
+                <div className={s["time-indicator__rule"]} />
+              </div>
+            ))}
+          </div>
+
+          {props.columns.map((column, colIdx) => (
+            <div className={s["columns"]}>
+              <div className={s["column"]} {...column.attributes}>
+                <div className={s["slots-layer"]}>
+                  {slotsByColumn[colIdx].slots.map((timeSlot) => (
+                    <div key={timeSlot.id} className={s["slot"]}>
+                      {props.renderTimeSlot(timeSlot)}
+                    </div>
+                  ))}
+                </div>
+
+                <div className={s["separators-layer"]}>
+                  {slotIndicators.map((hourIndicator) => (
+                    <div
+                      className={s["separator"]}
+                      key={hourIndicator.id}
+                      data-is-hour={hourIndicator.isHour}
+                    >
+                      <span className='separator__rule'></span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className={s["events-layer"]}>
+                  {eventTilesByColumn[colIdx].eventTiles.map((tile) => (
+                    <div
+                      key={tile.id}
+                      className={s["event-tile"]}
+                      style={{
+                        gridRowStart: tile.geometry.yStart + 1,
+                        gridRowEnd: tile.geometry.yEnd + 1,
+                        width: `calc(${
+                          tile.geometry.width * 100
+                        }% - (var(--tile-gap) * 2))`,
+                        left: `calc(${
+                          tile.geometry.xOffset * 100
+                        }% + var(--tile-gap))`,
+                      }}
+                    >
+                      {props.renderEventTile({ event: tile.event, tile })}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

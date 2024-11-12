@@ -1,20 +1,28 @@
+import type { CalendarData } from "@/types/data";
 import { lazy } from "react";
+
+type ViewProps<E = unknown, B = unknown> = {} & CalendarData<E, B>;
+
+type ViewDef = {
+  name: string;
+  Component: React.LazyExoticComponent<React.ComponentType<ViewProps>>;
+};
 
 export const Views = {
   month: {
     name: "month",
-    component: lazy(() => import("./month/month")),
+    Component: lazy(() => import("./month/month")),
   },
   week: {
     name: "week",
-    component: lazy(() => import("./week/week")),
+    Component: lazy(() => import("./week/week")),
   },
   day: {
     name: "day",
-    component: lazy(() => import("./day/day")),
+    Component: lazy(() => import("./day/day")),
   },
   group: {
     name: "group",
-    component: lazy(() => import("./group/group")),
+    Component: lazy(() => import("./group/group")),
   },
-} as const;
+} as const satisfies Record<string, ViewDef>;

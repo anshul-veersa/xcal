@@ -1,1 +1,1 @@
-export { default as ColumnGrid } from "./column-grid/column-grid.vue";
+export * from "./column-grid/column-grid";

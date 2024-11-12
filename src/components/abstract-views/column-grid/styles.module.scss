@@ -1,0 +1,205 @@
+.column-grid-layout {
+  --slots-count: attr(data-slots-count number);
+  --slot-height: calc(attr(data-slot-height number) * 1px);
+  --slot-background: #fbfbfb;
+  --slot-active-background: #d5eaea79;
+  --slot-gutter: 5%;
+
+  --indicators-count: attr(data-indicators-count number);
+
+  --content-breathing-space: 16px 0;
+
+  --side-bar-background: #fff;
+  --side-bar-width: 100px;
+  --column-min-width: 100px;
+
+  --header-background: #fff;
+
+  --separator-color: rgba(0, 0, 0, 0.2);
+  --separator-color-secondary: rgba(0, 0, 0, 0.05);
+  --separator-thickness: 1px;
+
+  --tile-gap: 2px;
+  --tile-min-width: 10px;
+}
+
+.column-grid-layout {
+  display: grid;
+  grid-template: auto 1fr / var(--side-bar-width) 1fr;
+  height: 100%;
+}
+
+.content {
+  grid-row: 2 / -1;
+  grid-column: 1 / -1;
+  overflow-y: auto;
+}
+
+.content-layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--side-bar-width) 1fr;
+}
+
+.content-layout {
+  .indicators {
+    grid-column: 1 / 2;
+  }
+  .columns {
+    grid-column: 2 / 3;
+  }
+}
+
+.time-indicators {
+  display: grid;
+  grid-template-rows: repeat(
+    calc(var(--indicators-count) - 1),
+    calc(
+      var(--slots-count) * var(--slot-height) / (var(--indicators-count) - 1)
+    )
+  );
+  left: 0;
+  position: sticky;
+  z-index: 1;
+  border-right: var(--separator-thickness) solid var(--separator-color);
+  background-color: var(--side-bar-background);
+  padding: var(--content-breathing-space);
+
+  .time-indicator {
+    display: flex;
+    align-items: center;
+    height: 0px;
+
+    &__label {
+      flex-shrink: 0;
+      text-align: right;
+      margin-right: 16px;
+      width: 64%;
+    }
+
+    &__rule {
+      width: 100%;
+      height: var(--separator-thickness);
+      background-color: var(--separator-color);
+    }
+
+    &:not([data-is-hour]) {
+      .time-indicator__rule {
+        background-color: var(--separator-color-secondary);
+      }
+
+      .time-indicator__label {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+.columns {
+  display: flex;
+
+  .column {
+    padding: var(--content-breathing-space);
+    background-color: var(--slot-background);
+
+    flex: 1 1 0;
+    min-width: var(--column-min-width);
+    display: grid;
+
+    &:not(:last-child) {
+      border-right: var(--separator-thickness) solid var(--separator-color);
+    }
+
+    .separators-layer {
+      pointer-events: none;
+      grid-row-start: 1;
+      grid-column-start: 1;
+      display: grid;
+
+      grid-template-rows: repeat(
+        calc(var(--indicators-count) - 1),
+        calc(
+          var(--slots-count) * var(--slot-height) /
+            (var(--indicators-count) - 1)
+        )
+      );
+      .separator {
+        display: flex;
+        align-items: center;
+        height: 0px;
+
+        &__rule {
+          width: 100%;
+          height: var(--separator-thickness);
+          background-color: var(--separator-color);
+        }
+
+        &:not([data-is-hour]) {
+          .separator__rule {
+            background-color: var(--separator-color-secondary);
+          }
+        }
+      }
+    }
+
+    .slots-layer,
+    .events-layer {
+      grid-row-start: 1;
+      grid-column-start: 1;
+      display: grid;
+      grid-template-rows: repeat(var(--slots-count), var(--slot-height));
+    }
+
+    .events-layer {
+      padding-right: var(--slot-gutter);
+      pointer-events: none;
+      .event-tile {
+        grid-column-start: 1;
+        position: relative;
+        margin: var(--tile-gap) 0;
+        min-width: var(--tile-min-width);
+        pointer-events: all;
+      }
+    }
+
+    .slots-layer {
+      .slot {
+        &:hover {
+          background-color: var(--slot-active-background);
+        }
+      }
+    }
+  }
+}
+
+.corner {
+  border-bottom: 1px solid var(--separator-color);
+}
+
+.header {
+  grid-row: 1 / 2;
+  grid-column: 2 / -1;
+  background-color: var(--header-background);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .header-items {
+    display: flex;
+    .header-item {
+      flex: 1 1 0;
+      min-width: var(--column-min-width);
+    }
+  }
+}
+
+[data-scroll-sync="all"],
+[data-scroll-sync="x"] {
+  overflow-x: auto;
+}
+
+[data-scroll-sync="all"],
+[data-scroll-sync="y"] {
+  overflow-y: auto;
+}
