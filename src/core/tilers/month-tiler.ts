@@ -1,4 +1,4 @@
-import type { TimeUtils } from "@/core/time";
+import type { TimeUtils } from "@/core/temporal";
 import type { BaseEventTile, BaseEvent } from "@/types";
 
 type Tile<Event extends BaseEvent> = {

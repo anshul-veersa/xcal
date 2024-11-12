@@ -31,9 +31,9 @@ export interface XCalConfig<EventData, BackgroundEventData> {
   config?: Partial<CommonConfig>;
   locale?: Partial<LocaleOptions>;
   views?: {
-    day: Partial<DayViewConfig>;
-    week: Partial<WeekViewConfig>;
-    month: Partial<MonthViewConfig>;
-    group: Partial<GroupViewConfig<EventData, BackgroundEventData>>;
+    day?: Partial<DayViewConfig>;
+    week?: Partial<WeekViewConfig>;
+    month?: Partial<MonthViewConfig>;
+    group?: Partial<GroupViewConfig<EventData, BackgroundEventData>>;
   };
 }

@@ -20,7 +20,6 @@ import {
   addMinutes,
   differenceInMinutes,
   eachMinuteOfInterval,
-  roundToNearestHours,
   roundToNearestMinutes,
   isSameMinute,
 } from "date-fns";
@@ -39,7 +38,7 @@ export class TimeUtils {
   isBefore = isBefore;
   isSameDay = isSameDay;
   isBetween = isWithinInterval;
-  isSameMinute = isSameMinute
+  isSameMinute = isSameMinute;
 
   /**
    * ARITHMETIC UTILITIES
@@ -60,7 +59,7 @@ export class TimeUtils {
     endOfWeek(date, { weekStartsOn: this.locale.options?.weekStartsOn });
   startOfDay = startOfDay;
   endOfDay = endOfDay;
-  roundToNearestMinutes = roundToNearestMinutes
+  roundToNearestMinutes = roundToNearestMinutes;
 
   /**
    * RANGE & INTERVAL UTILITIES
@@ -93,7 +92,6 @@ export class TimeUtils {
     differenceInCalendarDays(date, this.startOfWeek(date));
   getMinutesPassedInDay = (date: Date) =>
     date.getHours() * 60 + date.getMinutes();
-
 
   daysOfWeek(format: string = "EEE") {
     const date = new Date();

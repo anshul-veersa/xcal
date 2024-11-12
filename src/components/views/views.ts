@@ -1,20 +1,20 @@
-import { defineAsyncComponent } from "vue";
+import { lazy } from "react";
 
 export const Views = {
   month: {
     name: "month",
-    component: defineAsyncComponent(() => import("./month/month.vue")),
+    component: lazy(() => import("./month/month")),
   },
   week: {
     name: "week",
-    component: defineAsyncComponent(() => import("./week/week.vue")),
+    component: lazy(() => import("./week/week")),
   },
   day: {
     name: "day",
-    component: defineAsyncComponent(() => import("./day/day.vue")),
+    component: lazy(() => import("./day/day")),
   },
   group: {
     name: "group",
-    component: defineAsyncComponent(() => import("./group/group.vue")),
+    component: lazy(() => import("./group/group")),
   },
 } as const;

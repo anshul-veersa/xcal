@@ -1,6 +1,4 @@
-// interface for props
-
-import { XCalConfig } from "@/types";
+import { type XCalConfig } from "@/types";
 
 type XCalProps<E, B> = {
   date: Date;
@@ -9,5 +7,5 @@ type XCalProps<E, B> = {
 export function XCal<EventData, BackgroundEventData>(
   props: XCalProps<EventData, BackgroundEventData>
 ) {
-  return <div></div>;
+  return <div className='xcal'></div>;
 }

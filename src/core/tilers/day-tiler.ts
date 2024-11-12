@@ -1,4 +1,4 @@
-import type { TimeUtils } from "@/core/time";
+import type { TimeUtils } from "@/core/temporal";
 import { arrayToMap, clamp } from "@/core/utils";
 import type { BaseEventTile, BaseEvent } from "@/types";
 
@@ -237,7 +237,7 @@ class ConnectedComponents<Node extends NodeType> {
     if (cachedLongestPath) return cachedLongestPath;
 
     let longestPath: LongestPath = { neighbor: null, length: 0 };
-    for (let neighbor of node.link[neighborKey]) {
+    for (const neighbor of node.link[neighborKey]) {
       const neighborsLongestPath = this.getLongestPathNeighbor(
         neighbor,
         neighborKey,
