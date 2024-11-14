@@ -1,15 +1,19 @@
 import { ConfigProvider } from "@/providers/config/provider";
 import { TimeProvider } from "@/providers/temporal";
-import { type RootConfig } from "@/types";
+import type {
+  RootConfig,
+  EventTileRenderFunction,
+  HeaderItemRenderFunction,
+  TimeSlotRenderFunction,
+  CalendarEvent,
+} from "@/types";
 import type { CalendarData } from "@/types/data";
 import { Views } from "@/components/views";
 
-type RenderFunction<T = unknown> = (data: T) => React.ReactNode;
-
 type XCalProps<E, B> = {
-  renderEventTile: RenderFunction;
-  renderHeaderItem?: RenderFunction;
-  renderTimeSlot?: RenderFunction;
+  renderEventTile: EventTileRenderFunction<CalendarEvent<E>>;
+  renderHeaderItem?: HeaderItemRenderFunction;
+  renderTimeSlot?: TimeSlotRenderFunction;
   onEventUpdate?: () => void;
   onSlotClick?: () => void;
 } & RootConfig<E, B> &

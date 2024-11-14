@@ -1,3 +1,34 @@
+import { ColumnGrid } from "@/components/abstract-views";
+import { useConfig } from "@/providers/config/context";
+import { useData } from "@/providers/data/context";
+
 export default function DayView() {
-  return <div></div>;
+  const rootConfig = useConfig();
+  const data = useData();
+  const 
+
+  const dayColumn = {
+    id: data.date.getDate(),
+    date: data.date,
+    header: {
+      data: {},
+      attributes: {},
+    },
+    events: data.events,
+    backgroundEvents: data.backgroundEvents,
+    attributes: {},
+  };
+
+  return (
+    <div className='day-view'>
+      <ColumnGrid
+        activeDate={data.date}
+        columns={[dayColumn]}
+        config={{hourIndicatorLabelFormat: rootConfig.}}
+        renderEventTile={}
+        renderHeaderItem={}
+        renderTimeSlot={}
+      />
+    </div>
+  );
 }
