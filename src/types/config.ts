@@ -10,7 +10,7 @@ export type SlotDuration = 10 | 15 | 30 | 60;
 
 export type View = keyof typeof Views;
 
-type ConfigOptions = {
+export type ConfigOptions = {
   /**
    * Duration (in minutes) of a single time slot shown. Used for Day, Week, Group views
    * @default 30

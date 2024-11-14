@@ -1,16 +1,5 @@
 import type { SlotDuration, XCalConfig } from "@/types";
-
-export type DayViewConfig = {
-  slotDuration: SlotDuration;
-  maxEventsPerSlot: number;
-  showCurrentTimeMarker: boolean;
-  showAllDaySlot: boolean;
-  showSlotIndicators: boolean;
-  showSlotSeparator: boolean;
-  scrollTimeIntoView: Date;
-  hourIndicatorLabelFormat: string;
-  slotHeight: number;
-};
+import type { DayViewConfig } from "./types";
 
 export function adaptConfig<T, B>(xCalConfig: XCalConfig<T, B>): DayViewConfig {
   const viewConfig = xCalConfig.views?.day ?? {};

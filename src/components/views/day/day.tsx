@@ -5,7 +5,7 @@ import { useData } from "@/providers/data/context";
 export default function DayView() {
   const rootConfig = useConfig();
   const data = useData();
-  const 
+  const renderer = useRenderer();
 
   const dayColumn = {
     id: data.date.getDate(),
@@ -25,7 +25,7 @@ export default function DayView() {
         activeDate={data.date}
         columns={[dayColumn]}
         config={{hourIndicatorLabelFormat: rootConfig.}}
-        renderEventTile={}
+        renderEventTile={renderer.renderEventTile}
         renderHeaderItem={}
         renderTimeSlot={}
       />
