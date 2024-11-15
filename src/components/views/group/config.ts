@@ -1,72 +1,47 @@
-import type {
-  BackgroundEvent,
-  CalendarEvent,
-  SlotDuration,
-  XCalConfig,
-} from "@/types";
-
-export type GroupId = string | number;
-export type Group<EventData, BackgroundEventData> = {
-  id: GroupId;
-  events: CalendarEvent<EventData>[];
-  backgroundEvents?: BackgroundEvent<BackgroundEventData>[];
-};
-
-export type GroupViewConfig<T, B> = {
-  slotDuration: SlotDuration;
-  maxEventsPerSlot: number;
-  showCurrentTimeMarker: boolean;
-  showAllDaySlot: boolean;
-  showSlotIndicators: boolean;
-  showSlotSeparator: boolean;
-  scrollTimeIntoView: Date;
-  hourIndicatorLabelFormat: string;
-  slotHeight: number;
-  groupSelector: (event: CalendarEvent<T> | BackgroundEvent<B>) => GroupId;
-  groupOrderer: (groups: Group<T, B>[]) => Group<T, B>[];
-};
+import type { RootConfig } from "@/types";
+import type { GroupViewConfig } from "./types";
 
 export function adaptConfig<T, B>(
-  xCalConfig: XCalConfig<T, B>
+  xCalConfig: RootConfig<T, B>
 ): GroupViewConfig<T, B> {
   const viewConfig = xCalConfig.views?.group ?? {};
 
   return {
     hourIndicatorLabelFormat:
       viewConfig.hourIndicatorLabelFormat ??
-      xCalConfig.config.hourIndicatorLabelFormat ??
+      xCalConfig.common?.hourIndicatorLabelFormat ??
       defaults.hourIndicatorLabelFormat,
     maxEventsPerSlot:
       viewConfig.maxEventsPerSlot ??
-      xCalConfig.config.maxEventsPerSlot ??
+      xCalConfig.common?.maxEventsPerSlot ??
       defaults.maxEventsPerSlot,
     scrollTimeIntoView:
       viewConfig.scrollTimeIntoView ??
-      xCalConfig.config.scrollTimeIntoView ??
+      xCalConfig.common?.scrollTimeIntoView ??
       defaults.scrollTimeIntoView,
     showAllDaySlot:
       viewConfig.showAllDaySlot ??
-      xCalConfig.config.showAllDaySlot ??
+      xCalConfig.common?.showAllDaySlot ??
       defaults.showAllDaySlot,
     showCurrentTimeMarker:
       viewConfig.showCurrentTimeMarker ??
-      xCalConfig.config.showCurrentTimeMarker ??
+      xCalConfig.common?.showCurrentTimeMarker ??
       defaults.showCurrentTimeMarker,
     showSlotIndicators:
       viewConfig.showSlotIndicators ??
-      xCalConfig.config.showSlotIndicators ??
+      xCalConfig.common?.showSlotIndicators ??
       defaults.showSlotIndicators,
     showSlotSeparator:
       viewConfig.showSlotSeparator ??
-      xCalConfig.config.showSlotSeparator ??
+      xCalConfig.common?.showSlotSeparator ??
       defaults.showSlotSeparator,
     slotDuration:
       viewConfig.slotDuration ??
-      xCalConfig.config.slotDuration ??
+      xCalConfig.common?.slotDuration ??
       defaults.slotDuration,
     slotHeight:
       viewConfig.slotHeight ??
-      xCalConfig.config.slotHeight ??
+      xCalConfig.common?.slotHeight ??
       defaults.slotHeight,
     groupSelector: viewConfig.groupSelector ?? defaults.groupSelector,
     groupOrderer: viewConfig.groupOrderer ?? defaults.groupOrderer,

@@ -1,45 +1,45 @@
-import type { SlotDuration, XCalConfig } from "@/types";
+import type { RootConfig } from "@/types";
 import type { DayViewConfig } from "./types";
 
-export function adaptConfig<T, B>(xCalConfig: XCalConfig<T, B>): DayViewConfig {
+export function adaptConfig<T, B>(xCalConfig: RootConfig<T, B>): DayViewConfig {
   const viewConfig = xCalConfig.views?.day ?? {};
 
   return {
     hourIndicatorLabelFormat:
       viewConfig.hourIndicatorLabelFormat ??
-      xCalConfig.config.hourIndicatorLabelFormat ??
+      xCalConfig.common?.hourIndicatorLabelFormat ??
       defaults.hourIndicatorLabelFormat,
     maxEventsPerSlot:
       viewConfig.maxEventsPerSlot ??
-      xCalConfig.config.maxEventsPerSlot ??
+      xCalConfig.common?.maxEventsPerSlot ??
       defaults.maxEventsPerSlot,
     scrollTimeIntoView:
       viewConfig.scrollTimeIntoView ??
-      xCalConfig.config.scrollTimeIntoView ??
+      xCalConfig.common?.scrollTimeIntoView ??
       defaults.scrollTimeIntoView,
     showAllDaySlot:
       viewConfig.showAllDaySlot ??
-      xCalConfig.config.showAllDaySlot ??
+      xCalConfig.common?.showAllDaySlot ??
       defaults.showAllDaySlot,
     showCurrentTimeMarker:
       viewConfig.showCurrentTimeMarker ??
-      xCalConfig.config.showCurrentTimeMarker ??
+      xCalConfig.common?.showCurrentTimeMarker ??
       defaults.showCurrentTimeMarker,
     showSlotIndicators:
       viewConfig.showSlotIndicators ??
-      xCalConfig.config.showSlotIndicators ??
+      xCalConfig.common?.showSlotIndicators ??
       defaults.showSlotIndicators,
     showSlotSeparator:
       viewConfig.showSlotSeparator ??
-      xCalConfig.config.showSlotSeparator ??
+      xCalConfig.common?.showSlotSeparator ??
       defaults.showSlotSeparator,
     slotDuration:
       viewConfig.slotDuration ??
-      xCalConfig.config.slotDuration ??
+      xCalConfig.common?.slotDuration ??
       defaults.slotDuration,
     slotHeight:
       viewConfig.slotHeight ??
-      xCalConfig.config.slotHeight ??
+      xCalConfig.common?.slotHeight ??
       defaults.slotHeight,
   };
 }

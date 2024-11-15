@@ -1,22 +1,15 @@
-import type { CalendarEvent, XCalConfig } from "@/types";
-
-export type GroupId = string | number;
-export type Group<T> = { id: GroupId; events: CalendarEvent<T>[] };
-
-export type MonthViewConfig = {
-  maxEventsPerSlot: number;
-  showSiblingMonthDatesEvents: boolean;
-};
+import type { RootConfig } from "@/types";
+import type { MonthViewConfig } from "./types";
 
 export function adaptConfig<T, B>(
-  xCalConfig: XCalConfig<T, B>
+  xCalConfig: RootConfig<T, B>
 ): MonthViewConfig {
   const viewConfig = xCalConfig.views?.month ?? {};
 
   return {
     maxEventsPerSlot:
       viewConfig.maxEventsPerSlot ??
-      xCalConfig.config.maxEventsPerSlot ??
+      xCalConfig.common?.maxEventsPerSlot ??
       defaults.maxEventsPerSlot,
     showSiblingMonthDatesEvents:
       viewConfig.showSiblingMonthDatesEvents ??

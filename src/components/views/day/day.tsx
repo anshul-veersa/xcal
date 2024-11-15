@@ -1,6 +1,7 @@
 import { ColumnGrid } from "@/components/abstract-views";
 import { useConfig } from "@/providers/config/context";
 import { useData } from "@/providers/data/context";
+import { useRenderer } from "@/providers/renderer/context";
 
 export default function DayView() {
   const rootConfig = useConfig();
