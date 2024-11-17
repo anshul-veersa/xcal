@@ -8,6 +8,8 @@ import { useCallback } from "react";
 import type { TileEvent } from "@/types";
 import type { Tile } from "@/core/tilers/day-tiler";
 
+import s from "./styles.module.scss";
+
 export default function DayView() {
   const config = useConfig(adaptConfig);
   const data = useData();
@@ -56,7 +58,7 @@ export default function DayView() {
   );
 
   return (
-    <div className='day-view'>
+    <div className={s["day-view"]}>
       <ColumnGrid
         activeDate={data.date}
         columns={[dayColumn]}

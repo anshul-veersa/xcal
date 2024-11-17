@@ -1,11 +1,7 @@
 .column-grid-layout {
-  --slots-count: attr(data-slots-count number);
-  --slot-height: calc(attr(data-slot-height number) * 1px);
   --slot-background: #fbfbfb;
   --slot-active-background: #d5eaea79;
   --slot-gutter: 5%;
-
-  --indicators-count: attr(data-indicators-count number);
 
   --content-breathing-space: 16px 0;
 
@@ -170,10 +166,6 @@
       }
     }
   }
-}
-
-.corner {
-  border-bottom: 1px solid var(--separator-color);
 }
 
 .header {

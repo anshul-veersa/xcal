@@ -12,6 +12,8 @@ import { Views } from "@/components/views";
 import { RendererProvider } from "@/providers/renderer/provider";
 import { DataProvider } from "@/providers/data/provider";
 
+import s from "./styles.module.scss";
+
 const defaults = {
   view: Views["day"],
 } as const;
@@ -52,7 +54,7 @@ export function XCal<EventData, BackgroundEventData>(
           }}
         >
           <TimeProvider locale={props.locale}>
-            <div className='xcal'>{<ActiveView.Component />}</div>
+            <div className={s["x-cal"]}>{<ActiveView.Component />}</div>
           </TimeProvider>
         </DataProvider>
       </RendererProvider>

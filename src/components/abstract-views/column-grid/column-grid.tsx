@@ -134,9 +134,13 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
   return (
     <div
       className={s["column-grid-layout"]}
-      data-slots-count={computedConfig.totalSlots}
-      data-slot-height={props.config.slotHeight}
-      data-indicators-count={slotIndicators.length}
+      style={
+        {
+          "--slots-count": computedConfig.totalSlots,
+          "--slot-height": props.config.slotHeight + "px",
+          "--indicators-count": slotIndicators.length,
+        } as React.CSSProperties
+      }
     >
       <div className={s["corner"]}></div>
       <div className={s["header"]}>
@@ -169,9 +173,8 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
               </div>
             ))}
           </div>
-
-          {props.columns.map((column, colIdx) => (
-            <div className={s["columns"]}>
+          <div className={s["columns"]}>
+            {props.columns.map((column, colIdx) => (
               <div className={s["column"]} {...column.attributes}>
                 <div className={s["slots-layer"]}>
                   {slotsByColumn[colIdx].slots.map((timeSlot) => (
@@ -188,7 +191,7 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
                       key={hourIndicator.id}
                       data-is-hour={hourIndicator.isHour}
                     >
-                      <span className='separator__rule'></span>
+                      <span className={s["separator__rule"]}></span>
                     </div>
                   ))}
                 </div>
@@ -214,8 +217,8 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
                   ))}
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

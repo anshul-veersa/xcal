@@ -9,6 +9,8 @@ import type { TileEvent } from "@/types";
 import type { Tile } from "@/core/tilers/day-tiler";
 import { useTime } from "@/providers/temporal";
 
+import s from "./styles.module.scss";
+
 export default function WeekView() {
   const config = useConfig(adaptConfig);
   const data = useData();
@@ -74,7 +76,7 @@ export default function WeekView() {
   );
 
   return (
-    <div className='week-view'>
+    <div className={s["week-view"]}>
       <ColumnGrid
         activeDate={data.date}
         columns={columns}

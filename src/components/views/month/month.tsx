@@ -7,6 +7,8 @@ import clsx from "clsx";
 import { useMemo } from "react";
 import { adaptConfig } from "./config";
 
+import s from "./styles.module.scss";
+
 export default function MonthView() {
   const config = useConfig(adaptConfig);
   const data = useData();
@@ -82,9 +84,9 @@ export default function MonthView() {
   }, [calendarDates, data.events, tiler]);
 
   return (
-    <div className='month-view'>
-      <div className='month-layout'>
-        <header className='month-header'>
+    <div className={s["month-view"]}>
+      <div className={s["month-layout"]}>
+        <header className={s["month-header"]}>
           {weekDays.map((weekDay) => (
             <div key={weekDay.name} data-week-day={weekDay.name}>
               {weekDay.label}
@@ -93,40 +95,33 @@ export default function MonthView() {
         </header>
 
         {monthWeeks.map((week) => (
-          <div key={week.id} className='month-week' data-week={week.id}>
-            <div className='week-layout__cells'>
+          <div key={week.id} className={s["month-week"]} data-week={week.id}>
+            <div className={s["week-layout__cells"]}>
               {week.days.map((day) => (
                 <div
-                  v-for='day in week.days'
                   key={day.id}
-                  className={clsx({ today: day.isToday }, "day-cell")}
+                  className={clsx({ today: day.isToday }, s["day-cell"])}
                   data-date={day.id}
                 >
-                  <div className='day-cell__info'>
-                    <span className='date-label'>{day.label}</span>
+                  <div className={s["day-cell__info"]}>
+                    <span className={s["date-label"]}>{day.label}</span>
                   </div>
 
-                  <div className='day-cell__footer'></div>
+                  <div className={s["day-cell__footer"]}></div>
                 </div>
               ))}
             </div>
 
-            <div className='week-layout__overlay'>
+            <div className={s["week-layout__overlay"]}>
               {layoutEventTiles[week.id].eventTiles.map((tile) => (
                 <div
-                  v-for='tile in layoutEventTiles[week.id].eventTiles'
                   key={tile.id}
-                  className='overlay__tile'
+                  className={s["overlay__tile"]}
                   style={{
                     gridColumnStart: tile.geometry.xStart,
                     gridColumnEnd: tile.geometry.xEnd,
                   }}
                 >
-                  <slot
-                    name='event-tile'
-                    v-bind='{ event: tile.event, tile }'
-                  />
-
                   {renderer.renderEventTile({ tile, view: "month" })}
                 </div>
               ))}
