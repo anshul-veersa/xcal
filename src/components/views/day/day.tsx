@@ -9,11 +9,14 @@ import type { TileEvent } from "@/types";
 import type { Tile } from "@/core/tilers/day-tiler";
 
 import s from "./styles.module.scss";
+import { useTime } from "@/providers/temporal";
 
 export default function DayView() {
   const config = useConfig(adaptConfig);
   const data = useData();
   const renderer = useRenderer();
+
+  const t = useTime();
 
   const dayColumn = {
     id: data.date.getDate(),
@@ -34,9 +37,16 @@ export default function DayView() {
       if (renderer.renderHeaderItem)
         return renderer.renderHeaderItem({ view: "day", data });
 
-      return <div>{data.date.toDateString()}</div>;
+      return (
+        <div className={s["day-view__header"]}>
+          <span className={s["date"]}>
+            {t.format(data.date, "dd MMMM yyyy")}
+          </span>
+          <span>{t.format(data.date, "EEEE")}</span>
+        </div>
+      );
     },
-    [renderer]
+    [t, renderer]
   );
 
   const renderEventTile = useCallback(
@@ -66,6 +76,7 @@ export default function DayView() {
         renderEventTile={renderEventTile}
         renderHeaderItem={renderHeaderItem}
         renderTimeSlot={renderTimeSlot}
+        renderCorner={renderer.renderTimeGridCorner}
       />
     </div>
   );

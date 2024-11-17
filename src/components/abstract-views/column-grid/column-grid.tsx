@@ -124,7 +124,9 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
     const scrollSync = new ScrollSync("data-scroll-sync");
     scrollSync.mount();
 
-    document.querySelector(`[data-scroll-into-view="true"]`)?.scrollIntoView();
+    document
+      .querySelector(`[data-scroll-into-view="true"]`)
+      ?.scrollIntoView({ block: "start" });
 
     return () => {
       scrollSync.destroy();
@@ -142,7 +144,11 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
         } as React.CSSProperties
       }
     >
-      <div className={s["corner"]}></div>
+      <div className={s["corner"]}>
+        {props.renderCorner?.(null) ?? (
+          <div className={s["corner__content"]}></div>
+        )}
+      </div>
       <div className={s["header"]}>
         <div className={s["header-items"]}>
           {props.columns.map((column) => (
@@ -161,8 +167,8 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
           <div className={s["time-indicators"]}>
             {slotIndicators.map((indicator) => (
               <div
-                className={s["time-indicator"]}
                 key={indicator.id}
+                className={s["time-indicator"]}
                 data-is-hour={indicator.isHour}
                 data-scroll-into-view={indicator.scrollIntoView}
               >
@@ -175,7 +181,11 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
           </div>
           <div className={s["columns"]}>
             {props.columns.map((column, colIdx) => (
-              <div className={s["column"]} {...column.attributes}>
+              <div
+                key={column.id}
+                className={s["column"]}
+                {...column.attributes}
+              >
                 <div className={s["slots-layer"]}>
                   {slotsByColumn[colIdx].slots.map((timeSlot) => (
                     <div key={timeSlot.id} className={s["slot"]}>

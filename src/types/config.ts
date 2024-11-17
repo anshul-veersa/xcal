@@ -55,6 +55,11 @@ export type ConfigOptions = {
    * @default start
    */
   scrollTimeIntoView: Date;
+  /**
+   * Sets the maximum viewport height of the calendar view.
+   * @default undefined
+   */
+  maxViewHeight: number;
 };
 
 export type LocaleOptions = {
@@ -72,6 +77,7 @@ type CommonConfig = Pick<
   | "showSlotSeparator"
   | "slotDuration"
   | "slotHeight"
+  | "maxViewHeight"
 >;
 
 export interface RootConfig {

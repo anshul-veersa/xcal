@@ -61,3 +61,12 @@ export type TimeSlotRenderFunction<BackgroundEventData = unknown> =
   >;
 
 export type DataAttributes = Record<string, unknown>;
+
+export type TimeGridCornerRenderFunction = RenderFunction;
+
+export type RenderFunctions<EventData, BackgroundEventData> = {
+  renderEventTile: EventTileRenderFunction<TileEvent<EventData>>;
+  renderHeaderItem?: HeaderItemRenderFunction;
+  renderTimeSlot?: TimeSlotRenderFunction<BackgroundEventData>;
+  renderTimeGridCorner?: TimeGridCornerRenderFunction;
+};

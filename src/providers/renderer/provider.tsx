@@ -3,6 +3,7 @@ import type {
   EventTileRenderFunction,
   HeaderItemRenderFunction,
   TimeSlotRenderFunction,
+  TimeGridCornerRenderFunction,
 } from "@/types";
 import { RendererContext } from "./context";
 
@@ -11,6 +12,7 @@ export function RendererProvider(props: {
     renderEventTile: EventTileRenderFunction<TileEvent>;
     renderHeaderItem?: HeaderItemRenderFunction;
     renderTimeSlot?: TimeSlotRenderFunction;
+    renderTimeGridCorner?: TimeGridCornerRenderFunction;
   };
   children: React.ReactNode;
 }) {

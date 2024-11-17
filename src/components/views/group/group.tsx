@@ -88,6 +88,7 @@ export default function GroupView() {
         renderEventTile={renderEventTile}
         renderHeaderItem={renderHeaderItem}
         renderTimeSlot={renderTimeSlot}
+        renderCorner={renderer.renderTimeGridCorner}
       />
     </div>
   );

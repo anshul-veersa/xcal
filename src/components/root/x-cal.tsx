@@ -3,10 +3,10 @@ import { TimeProvider } from "@/providers/temporal";
 import type {
   RootConfig,
   EventTileRenderFunction,
-  HeaderItemRenderFunction,
   TimeSlotRenderFunction,
   TileEvent,
   CalendarData,
+  RenderFunctions,
 } from "@/types";
 import { Views } from "@/components/views";
 import { RendererProvider } from "@/providers/renderer/provider";
@@ -19,12 +19,10 @@ const defaults = {
 } as const;
 
 type XCalProps<EventData, BackgroundEventData> = {
-  renderEventTile: EventTileRenderFunction<TileEvent<EventData>>;
-  renderHeaderItem?: HeaderItemRenderFunction;
-  renderTimeSlot?: TimeSlotRenderFunction<BackgroundEventData>;
   onEventUpdate?: () => void;
   onSlotClick?: () => void;
-} & RootConfig &
+} & RenderFunctions<EventData, BackgroundEventData> &
+  RootConfig &
   Omit<CalendarData<EventData, BackgroundEventData>, "backgroundEvents"> &
   Partial<
     Pick<CalendarData<EventData, BackgroundEventData>, "backgroundEvents">
@@ -43,6 +41,7 @@ export function XCal<EventData, BackgroundEventData>(
             props.renderEventTile as EventTileRenderFunction<TileEvent>,
           renderHeaderItem: props.renderHeaderItem,
           renderTimeSlot: props.renderTimeSlot as TimeSlotRenderFunction,
+          renderTimeGridCorner: props.renderTimeGridCorner,
         }}
       >
         <DataProvider
@@ -54,7 +53,16 @@ export function XCal<EventData, BackgroundEventData>(
           }}
         >
           <TimeProvider locale={props.locale}>
-            <div className={s["x-cal"]}>{<ActiveView.Component />}</div>
+            <div
+              className={s["x-cal"]}
+              style={
+                {
+                  "--max-view-height": props.common?.maxViewHeight,
+                } as React.CSSProperties
+              }
+            >
+              {<ActiveView.Component />}
+            </div>
           </TimeProvider>
         </DataProvider>
       </RendererProvider>

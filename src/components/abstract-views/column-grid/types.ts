@@ -41,4 +41,5 @@ export interface ColumnGridProps<HeaderData> {
   renderHeaderItem: RenderFunction<HeaderData>;
   renderTimeSlot: RenderFunction<TimeSlot>;
   renderEventTile: RenderFunction<Tile<TileEvent>>;
+  renderCorner?: RenderFunction;
 }

@@ -3,6 +3,7 @@ import type {
   EventTileRenderFunction,
   HeaderItemRenderFunction,
   TimeSlotRenderFunction,
+  TimeGridCornerRenderFunction,
 } from "@/types";
 import { createContext, useContext } from "react";
 
@@ -10,6 +11,7 @@ type RendererContextType = {
   renderEventTile: EventTileRenderFunction<TileEvent>;
   renderHeaderItem?: HeaderItemRenderFunction;
   renderTimeSlot?: TimeSlotRenderFunction;
+  renderTimeGridCorner: TimeGridCornerRenderFunction;
 };
 
 export const RendererContext = createContext<RendererContextType | null>(null);

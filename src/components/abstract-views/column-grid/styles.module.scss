@@ -1,6 +1,6 @@
 .column-grid-layout {
-  --slot-background: #fbfbfb;
-  --slot-active-background: #d5eaea79;
+  --slot-background: #ffffff;
+  --slot-active-background: #e7f2f279;
   --slot-gutter: 5%;
 
   --content-breathing-space: 16px 0;
@@ -17,6 +17,8 @@
 
   --tile-gap: 2px;
   --tile-min-width: 10px;
+
+  max-height: calc(var(--max-view-height) * 1px);
 }
 
 .column-grid-layout {
@@ -166,6 +168,12 @@
       }
     }
   }
+}
+
+.corner__content {
+  border-bottom: 1px solid var(--separator-color);
+  border-right: 1px solid var(--separator-color);
+  height: 100%;
 }
 
 .header {

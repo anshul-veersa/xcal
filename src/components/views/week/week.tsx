@@ -52,9 +52,18 @@ export default function WeekView() {
       if (renderer.renderHeaderItem)
         return renderer.renderHeaderItem({ view: "week", data });
 
-      return <div>{data.date.toDateString()}</div>;
+      return (
+        <div className={s["week-header-day"]}>
+          <span className={s["week-header-day__name"]}>
+            {t.format(data.date, "EEE")}
+          </span>
+          <span className={s["week-header-day__date"]}>
+            {t.format(data.date, "dd")}
+          </span>
+        </div>
+      );
     },
-    [renderer]
+    [t, renderer]
   );
 
   const renderEventTile = useCallback(
@@ -84,6 +93,7 @@ export default function WeekView() {
         renderEventTile={renderEventTile}
         renderHeaderItem={renderHeaderItem}
         renderTimeSlot={renderTimeSlot}
+        renderCorner={renderer.renderTimeGridCorner}
       />
     </div>
   );
