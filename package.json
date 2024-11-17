@@ -3,6 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "maintainers": [
+    {
+      "name": "Anshul Bansal"
+    }
+  ],
+  "files": [
+    "./dist"
+  ],
+  "types": "",
   "main": "./dist/xcal.cjs",
   "module": "./dist/xcal.js",
   "exports": {
@@ -12,7 +21,7 @@
     }
   },
   "scripts": {
-    "build": "vite build",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006"
   },
