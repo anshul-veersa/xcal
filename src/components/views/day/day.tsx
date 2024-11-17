@@ -47,7 +47,11 @@ export default function DayView() {
   const renderTimeSlot = useCallback(
     (slot: TimeSlot) => {
       if (renderer.renderTimeSlot)
-        return renderer.renderTimeSlot({ view: "day", slot });
+        return renderer.renderTimeSlot({
+          view: "day",
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          slot: { ...slot, backgroundEvents: slot.backgroundEvents as any },
+        });
     },
     [renderer]
   );

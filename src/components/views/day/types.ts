@@ -1,7 +1,7 @@
 import type { Tile } from "@/core/tilers/day-tiler";
-import type { BackgroundEvent, BaseEvent, ConfigOptions } from "@/types";
+import type { BackgroundEvent, ConfigOptions, TileEvent } from "@/types";
 
-export type DayViewEventTileData<Event extends BaseEvent> = {} & Tile<Event>;
+export type DayViewEventTile<Event extends TileEvent> = {} & Tile<Event>;
 
 export type DayViewConfig = {} & Pick<
   ConfigOptions,

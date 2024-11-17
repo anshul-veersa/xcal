@@ -12,24 +12,37 @@ import { Views } from "@/components/views";
 import { RendererProvider } from "@/providers/renderer/provider";
 import { DataProvider } from "@/providers/data/provider";
 
-type XCalProps<E, B> = {
-  renderEventTile: EventTileRenderFunction<TileEvent<E>>;
+const defaults = {
+  view: Views["day"],
+} as const;
+
+type XCalProps<EventData, BackgroundEventData> = {
+  renderEventTile: EventTileRenderFunction<TileEvent<EventData>>;
   renderHeaderItem?: HeaderItemRenderFunction;
-  renderTimeSlot?: TimeSlotRenderFunction<B>;
+  renderTimeSlot?: TimeSlotRenderFunction<BackgroundEventData>;
   onEventUpdate?: () => void;
   onSlotClick?: () => void;
 } & RootConfig &
-  Omit<CalendarData<E, B>, "backgroundEvents"> &
-  Partial<Pick<CalendarData<E, B>, "backgroundEvents">>;
+  Omit<CalendarData<EventData, BackgroundEventData>, "backgroundEvents"> &
+  Partial<
+    Pick<CalendarData<EventData, BackgroundEventData>, "backgroundEvents">
+  >;
 
 export function XCal<EventData, BackgroundEventData>(
   props: XCalProps<EventData, BackgroundEventData>
 ) {
-  const ActiveView = Views[props.view ?? "day"] ?? Views["day"];
+  const ActiveView = Views[props.view] ?? defaults.view;
 
   return (
     <ConfigProvider config={props}>
-      <RendererProvider renderers={props}>
+      <RendererProvider
+        renderers={{
+          renderEventTile:
+            props.renderEventTile as EventTileRenderFunction<TileEvent>,
+          renderHeaderItem: props.renderHeaderItem,
+          renderTimeSlot: props.renderTimeSlot as TimeSlotRenderFunction,
+        }}
+      >
         <DataProvider
           data={{
             backgroundEvents: props.backgroundEvents ?? [],
@@ -46,3 +59,30 @@ export function XCal<EventData, BackgroundEventData>(
     </ConfigProvider>
   );
 }
+
+// <XCal
+//   date={new Date()}
+//   events={[
+//     {
+//       id: 1,
+//       startsAt: new Date("2024-11-17"),
+//       endsAt: new Date(),
+//       data: {
+//         myData: 1,
+//       },
+//     },
+//   ]}
+//   renderEventTile={(props) => <div>{props.view === 'day' ? props.tile.event.data?.myData}</div>}
+//   view='day'
+//   renderHeaderItem={(props) => props.view === 'day' ? props.data.date}
+//   renderTimeSlot={(props) => <div>{props.view === 'day' ? props.slot.backgroundEvents[1].}</div>}
+//   backgroundEvents={[
+//     {
+//       data: { f: 1 },
+//       endsAt: new Date(),
+//       startsAt: new Date(),
+//       id: 1,
+//       priority: 1,
+//     },
+//   ]}
+// />;

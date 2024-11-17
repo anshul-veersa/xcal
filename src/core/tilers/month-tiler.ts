@@ -1,7 +1,7 @@
 import type { TimeUtils } from "@/core/temporal";
-import type { BaseEventTile, BaseEvent } from "@/types";
+import type { BaseEventTile, TileEvent } from "@/types";
 
-export type Tile<Event extends BaseEvent> = {
+export type Tile<Event extends TileEvent> = {
   /**
    * Positional and dimensional properties of the tile
    */
@@ -22,7 +22,7 @@ type TilerConfig = {
   maxPerSlot: number;
 };
 
-export class MonthTiler<Event extends BaseEvent> {
+export class MonthTiler<Event extends TileEvent> {
   constructor(
     private readonly config: TilerConfig,
     private readonly time: TimeUtils

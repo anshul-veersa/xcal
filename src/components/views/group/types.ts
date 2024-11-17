@@ -1,12 +1,7 @@
 import type { Tile } from "@/core/tilers/day-tiler";
-import type {
-  BackgroundEvent,
-  BaseEvent,
-  TileEvent,
-  ConfigOptions,
-} from "@/types";
+import type { BackgroundEvent, TileEvent, ConfigOptions } from "@/types";
 
-export type GroupViewTileEventData<Event extends BaseEvent> = {} & Tile<Event>;
+export type GroupViewTileEvent<Event extends TileEvent> = {} & Tile<Event>;
 
 export type GroupId = string | number;
 export type Group<EventData = unknown, BackgroundEventData = unknown> = {
@@ -30,3 +25,10 @@ export type GroupViewConfig = {
   | "hourIndicatorLabelFormat"
   | "slotHeight"
 >;
+
+export type GroupViewTimeSlot<BackgroundEventData> = {
+  group: Group<unknown, BackgroundEventData>;
+  startTime: Date;
+  endTime: Date;
+  backgroundEvents: BackgroundEvent<BackgroundEventData>[];
+};

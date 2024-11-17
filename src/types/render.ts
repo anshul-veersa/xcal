@@ -1,51 +1,54 @@
 import type {
-  DayViewEventTileData,
+  DayViewEventTile,
   DayViewHeaderItem,
   DayViewTimeSlot,
 } from "@/components/views/day/types";
 import type { View } from "./data";
-import type { BaseEvent } from "./event";
-import type { WeekViewEventTileData } from "@/components/views/week/types";
-import type { GroupViewTileEventData } from "@/components/views/group/types";
-import type { MonthViewTileEventData } from "@/components/views/month/types";
+import type { TileEvent } from "./event";
+import type { WeekViewEventTile } from "@/components/views/week/types";
+import type {
+  GroupViewTileEvent,
+  GroupViewTimeSlot,
+} from "@/components/views/group/types";
+import type { MonthViewTileEvent } from "@/components/views/month/types";
 
 export type RenderFunction<T = unknown> = (props: T) => React.ReactNode;
 
-type ViewSpecificEventTileData<ForView extends View, TileData> = {
+type ViewSpecificEventTile<ForView extends View, TileData> = {
   view: ForView;
   tile: TileData;
 };
 
-export type EventTileRenderFunction<TileEvent extends BaseEvent> =
-  RenderFunction<
-    | ViewSpecificEventTileData<"day", DayViewEventTileData<TileEvent>>
-    | ViewSpecificEventTileData<"week", WeekViewEventTileData<TileEvent>>
-    | ViewSpecificEventTileData<"group", GroupViewTileEventData<TileEvent>>
-    | ViewSpecificEventTileData<"month", MonthViewTileEventData<TileEvent>>
-  >;
+export type EventTileRenderFunction<Event extends TileEvent> = RenderFunction<
+  | ViewSpecificEventTile<"day", DayViewEventTile<Event>>
+  | ViewSpecificEventTile<"week", WeekViewEventTile<Event>>
+  | ViewSpecificEventTile<"group", GroupViewTileEvent<Event>>
+  | ViewSpecificEventTile<"month", MonthViewTileEvent<Event>>
+>;
 
-type ViewSpecificHeaderItemData<ForView extends View, Data> = {
+type ViewSpecificHeaderItem<ForView extends View, Data> = {
   view: ForView;
   data: Data;
 };
 
 export type HeaderItemRenderFunction = RenderFunction<
-  | ViewSpecificHeaderItemData<"day", DayViewHeaderItem>
-  | ViewSpecificHeaderItemData<"week", unknown>
-  | ViewSpecificHeaderItemData<"group", unknown>
-  | ViewSpecificHeaderItemData<"month", unknown>
+  | ViewSpecificHeaderItem<"day", DayViewHeaderItem>
+  | ViewSpecificHeaderItem<"week", unknown>
+  | ViewSpecificHeaderItem<"group", unknown>
+  | ViewSpecificHeaderItem<"month", unknown>
 >;
 
-type ViewSpecificTimeSlotData<ForView extends View, TimeSlotData> = {
+type ViewSpecificTimeSlot<ForView extends View, TimeSlotData> = {
   view: ForView;
   slot: TimeSlotData;
 };
 
-export type TimeSlotRenderFunction<BackgroundEventData> = RenderFunction<
-  | ViewSpecificTimeSlotData<"day", DayViewTimeSlot<BackgroundEventData>>
-  | ViewSpecificTimeSlotData<"week", unknown>
-  | ViewSpecificTimeSlotData<"group", unknown>
-  | ViewSpecificTimeSlotData<"month", unknown>
->;
+export type TimeSlotRenderFunction<BackgroundEventData = unknown> =
+  RenderFunction<
+    | ViewSpecificTimeSlot<"day", DayViewTimeSlot<BackgroundEventData>>
+    | ViewSpecificTimeSlot<"week", unknown>
+    | ViewSpecificTimeSlot<"group", GroupViewTimeSlot<BackgroundEventData>>
+    | ViewSpecificTimeSlot<"month", unknown>
+  >;
 
 export type DataAttributes = Record<string, unknown>;

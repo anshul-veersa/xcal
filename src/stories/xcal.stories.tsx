@@ -19,17 +19,25 @@ export const DayView: Story = {
   args: {
     view: "day",
     date: new Date(),
+    backgroundEvents: [
+      {
+        data: { f: 1 },
+        endsAt: new Date(),
+        startsAt: new Date(),
+        id: 1,
+        priority: 1,
+      },
+    ],
     events: [
       {
         id: 1,
         startsAt: new Date("2024-11-17"),
         endsAt: new Date(),
-        data: {},
+        data: {
+          myData: 1,
+        },
       },
     ],
-    renderEventTile: (k) =>
-      k.view === "day" ? (
-        <div>{k.tile.event.startsAt.toDateString()}</div>
-      ) : null,
+    renderEventTile: (k) => (k.view === "day" ? <div>1</div> : null),
   },
 };

@@ -1,7 +1,7 @@
 import type { Tile } from "@/core/tilers/day-tiler";
-import type { BaseEvent, ConfigOptions } from "@/types";
+import type { ConfigOptions, TileEvent } from "@/types";
 
-export type WeekViewEventTileData<Event extends BaseEvent> = {} & Tile<Event>;
+export type WeekViewEventTile<Event extends TileEvent> = {} & Tile<Event>;
 
 type Weekday =
   | "monday"

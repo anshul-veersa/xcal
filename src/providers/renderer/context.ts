@@ -1,23 +1,18 @@
 import type {
   TileEvent,
-  BaseEvent,
   EventTileRenderFunction,
   HeaderItemRenderFunction,
   TimeSlotRenderFunction,
-  BackgroundEvent,
 } from "@/types";
 import { createContext, useContext } from "react";
 
-type RendererContextType<TileEvent extends BaseEvent, BackgroundEventData> = {
+type RendererContextType = {
   renderEventTile: EventTileRenderFunction<TileEvent>;
   renderHeaderItem?: HeaderItemRenderFunction;
-  renderTimeSlot?: TimeSlotRenderFunction<BackgroundEventData>;
+  renderTimeSlot?: TimeSlotRenderFunction;
 };
 
-export const RendererContext = createContext<RendererContextType<
-  TileEvent,
-  BackgroundEvent
-> | null>(null);
+export const RendererContext = createContext<RendererContextType | null>(null);
 
 /** Use events and other data */
 export function useRenderer() {
