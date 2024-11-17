@@ -15,6 +15,10 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.ts"),
       formats: ["es", "cjs"],
     },
+    minify: "esbuild",
+    rollupOptions: {
+      external: ["react", "react-dom", "react/jsx-runtime"],
+    },
     outDir: path.resolve(__dirname, "./dist"),
     emptyOutDir: true,
   },

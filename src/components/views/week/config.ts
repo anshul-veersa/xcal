@@ -1,9 +1,7 @@
 import type { RootConfig } from "@/types";
 import type { WeekViewConfig } from "./types";
 
-export function adaptConfig<T, B>(
-  xCalConfig: RootConfig<T, B>
-): WeekViewConfig {
+export function adaptConfig(xCalConfig: RootConfig): WeekViewConfig {
   const viewConfig = xCalConfig.views?.week ?? {};
 
   return {

@@ -3,14 +3,23 @@ import type {
   DayViewHeaderItem,
   DayViewTimeSlot,
 } from "@/components/views/day/types";
-import type { View } from "./data";
-import type { TileEvent } from "./event";
-import type { WeekViewEventTile } from "@/components/views/week/types";
+import type {
+  WeekViewEventTile,
+  WeekViewHeaderItem,
+  WeekViewTimeSlot,
+} from "@/components/views/week/types";
 import type {
   GroupViewTileEvent,
+  GroupViewHeaderItem,
   GroupViewTimeSlot,
 } from "@/components/views/group/types";
-import type { MonthViewTileEvent } from "@/components/views/month/types";
+import type {
+  MonthViewTileEvent,
+  MonthViewHeaderItem,
+  MonthViewTimeSlot,
+} from "@/components/views/month/types";
+import type { View } from "./data";
+import type { TileEvent } from "./event";
 
 export type RenderFunction<T = unknown> = (props: T) => React.ReactNode;
 
@@ -33,9 +42,9 @@ type ViewSpecificHeaderItem<ForView extends View, Data> = {
 
 export type HeaderItemRenderFunction = RenderFunction<
   | ViewSpecificHeaderItem<"day", DayViewHeaderItem>
-  | ViewSpecificHeaderItem<"week", unknown>
-  | ViewSpecificHeaderItem<"group", unknown>
-  | ViewSpecificHeaderItem<"month", unknown>
+  | ViewSpecificHeaderItem<"week", WeekViewHeaderItem>
+  | ViewSpecificHeaderItem<"group", GroupViewHeaderItem>
+  | ViewSpecificHeaderItem<"month", MonthViewHeaderItem>
 >;
 
 type ViewSpecificTimeSlot<ForView extends View, TimeSlotData> = {
@@ -46,9 +55,9 @@ type ViewSpecificTimeSlot<ForView extends View, TimeSlotData> = {
 export type TimeSlotRenderFunction<BackgroundEventData = unknown> =
   RenderFunction<
     | ViewSpecificTimeSlot<"day", DayViewTimeSlot<BackgroundEventData>>
-    | ViewSpecificTimeSlot<"week", unknown>
+    | ViewSpecificTimeSlot<"week", WeekViewTimeSlot<BackgroundEventData>>
     | ViewSpecificTimeSlot<"group", GroupViewTimeSlot<BackgroundEventData>>
-    | ViewSpecificTimeSlot<"month", unknown>
+    | ViewSpecificTimeSlot<"month", MonthViewTimeSlot<BackgroundEventData>>
   >;
 
 export type DataAttributes = Record<string, unknown>;

@@ -49,8 +49,7 @@ export default function DayView() {
       if (renderer.renderTimeSlot)
         return renderer.renderTimeSlot({
           view: "day",
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          slot: { ...slot, backgroundEvents: slot.backgroundEvents as any },
+          slot: { ...slot, backgroundEvents: slot.backgroundEvents },
         });
     },
     [renderer]

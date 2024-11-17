@@ -5,9 +5,7 @@ import { XCal } from "@/components/root/x-cal";
 const meta = {
   title: "XCal",
   component: XCal,
-  parameters: {
-    layout: "centered",
-  },
+
   tags: ["autodocs"],
   argTypes: {},
 } satisfies Meta<typeof XCal>;
@@ -38,6 +36,6 @@ export const DayView: Story = {
         },
       },
     ],
-    renderEventTile: (k) => (k.view === "day" ? <div>1</div> : null),
+    renderEventTile: (k) => (k.view === "day" ? <div>{1}</div> : null),
   },
 };

@@ -59,30 +59,3 @@ export function XCal<EventData, BackgroundEventData>(
     </ConfigProvider>
   );
 }
-
-// <XCal
-//   date={new Date()}
-//   events={[
-//     {
-//       id: 1,
-//       startsAt: new Date("2024-11-17"),
-//       endsAt: new Date(),
-//       data: {
-//         myData: 1,
-//       },
-//     },
-//   ]}
-//   renderEventTile={(props) => <div>{props.view === 'day' ? props.tile.event.data?.myData}</div>}
-//   view='day'
-//   renderHeaderItem={(props) => props.view === 'day' ? props.data.date}
-//   renderTimeSlot={(props) => <div>{props.view === 'day' ? props.slot.backgroundEvents[1].}</div>}
-//   backgroundEvents={[
-//     {
-//       data: { f: 1 },
-//       endsAt: new Date(),
-//       startsAt: new Date(),
-//       id: 1,
-//       priority: 1,
-//     },
-//   ]}
-// />;
