@@ -32,3 +32,8 @@ export type GroupViewTimeSlot<BackgroundEventData> = {
   endTime: Date;
   backgroundEvents: BackgroundEvent<BackgroundEventData>[];
 };
+
+export type GroupViewHeaderItem = {
+  date: Date;
+  group: Group;
+};

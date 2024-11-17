@@ -1,9 +1,7 @@
 import type { RootConfig } from "@/types";
 import type { MonthViewConfig } from "./types";
 
-export function adaptConfig<T, B>(
-  xCalConfig: RootConfig<T, B>
-): MonthViewConfig {
+export function adaptConfig(xCalConfig: RootConfig): MonthViewConfig {
   const viewConfig = xCalConfig.views?.month ?? {};
 
   return {

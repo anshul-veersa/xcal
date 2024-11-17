@@ -6,8 +6,8 @@ import type {
   HeaderItemRenderFunction,
   TimeSlotRenderFunction,
   TileEvent,
+  CalendarData,
 } from "@/types";
-import type { CalendarData } from "@/types/data";
 import { Views } from "@/components/views";
 import { RendererProvider } from "@/providers/renderer/provider";
 import { DataProvider } from "@/providers/data/provider";

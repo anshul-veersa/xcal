@@ -1,4 +1,4 @@
-import type { CalendarData } from "@/types/data";
+import type { CalendarData } from "@/types";
 import { DataContext } from "./context";
 
 export function DataProvider(props: {

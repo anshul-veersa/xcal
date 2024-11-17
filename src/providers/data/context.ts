@@ -1,4 +1,4 @@
-import type { CalendarData } from "@/types/data";
+import type { CalendarData } from "@/types";
 import { createContext, useContext } from "react";
 
 export const DataContext = createContext<CalendarData<unknown, unknown> | null>(

@@ -5,7 +5,8 @@
   "type": "module",
   "maintainers": [
     {
-      "name": "Anshul Bansal"
+      "name": "Anshul Bansal",
+      "email": "anshulbansal02@outlook.com"
     }
   ],
   "files": [
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.2",
     "@eslint/js": "^9.15.0",
+    "@faker-js/faker": "^9.2.0",
     "@storybook/addon-essentials": "^8.4.4",
     "@storybook/addon-interactions": "^8.4.4",
     "@storybook/blocks": "^8.4.4",

@@ -1,9 +1,7 @@
 import type { RootConfig } from "@/types";
 import type { GroupViewConfig } from "./types";
 
-export function adaptConfig<T, B>(
-  xCalConfig: RootConfig<T, B>
-): GroupViewConfig<T, B> {
+export function adaptConfig(xCalConfig: RootConfig): GroupViewConfig {
   const viewConfig = xCalConfig.views?.group ?? {};
 
   return {
@@ -48,7 +46,7 @@ export function adaptConfig<T, B>(
   };
 }
 
-const defaults: GroupViewConfig<unknown, unknown> = {
+const defaults: GroupViewConfig = {
   hourIndicatorLabelFormat: "hh:mm",
   maxEventsPerSlot: 30,
   scrollTimeIntoView: new Date(),

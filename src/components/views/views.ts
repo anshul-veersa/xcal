@@ -1,4 +1,4 @@
-import type { CalendarData } from "@/types/data";
+import type { CalendarData } from "@/types";
 import { lazy } from "react";
 
 type ViewProps<E = unknown, B = unknown> = {} & CalendarData<E, B>;

@@ -5,9 +5,10 @@ import { useRenderer } from "@/providers/renderer/context";
 import { useTime } from "@/providers/temporal";
 import clsx from "clsx";
 import { useMemo } from "react";
+import { adaptConfig } from "./config";
 
 export default function MonthView() {
-  const config = useConfig();
+  const config = useConfig(adaptConfig);
   const data = useData();
   const renderer = useRenderer();
   const t = useTime();
@@ -61,7 +62,10 @@ export default function MonthView() {
     return Object.entries(monthWeeks).flatMap(([_, d]) => d.days);
   }, [monthWeeks]);
 
-  const tiler = new MonthTiler({ maxPerSlot: config.maxEventsPerSlot }, t);
+  const tiler = useMemo(
+    () => new MonthTiler({ maxPerSlot: config.maxEventsPerSlot }, t),
+    [t, config.maxEventsPerSlot]
+  );
   /**
    * Record of event tiles in series for each week of the month.
    * Used with CSS grid to place on the week layout.
