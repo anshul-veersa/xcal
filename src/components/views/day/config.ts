@@ -1,45 +1,45 @@
 import type { RootConfig } from "@/types";
 import type { DayViewConfig } from "./types";
 
-export function adaptConfig<T, B>(xCalConfig: RootConfig<T, B>): DayViewConfig {
-  const viewConfig = xCalConfig.views?.day ?? {};
+export function adaptConfig(rootConfig: RootConfig): DayViewConfig {
+  const viewConfig = rootConfig.views?.day ?? {};
 
   return {
     hourIndicatorLabelFormat:
       viewConfig.hourIndicatorLabelFormat ??
-      xCalConfig.common?.hourIndicatorLabelFormat ??
+      rootConfig.common?.hourIndicatorLabelFormat ??
       defaults.hourIndicatorLabelFormat,
     maxEventsPerSlot:
       viewConfig.maxEventsPerSlot ??
-      xCalConfig.common?.maxEventsPerSlot ??
+      rootConfig.common?.maxEventsPerSlot ??
       defaults.maxEventsPerSlot,
     scrollTimeIntoView:
       viewConfig.scrollTimeIntoView ??
-      xCalConfig.common?.scrollTimeIntoView ??
+      rootConfig.common?.scrollTimeIntoView ??
       defaults.scrollTimeIntoView,
     showAllDaySlot:
       viewConfig.showAllDaySlot ??
-      xCalConfig.common?.showAllDaySlot ??
+      rootConfig.common?.showAllDaySlot ??
       defaults.showAllDaySlot,
     showCurrentTimeMarker:
       viewConfig.showCurrentTimeMarker ??
-      xCalConfig.common?.showCurrentTimeMarker ??
+      rootConfig.common?.showCurrentTimeMarker ??
       defaults.showCurrentTimeMarker,
     showSlotIndicators:
       viewConfig.showSlotIndicators ??
-      xCalConfig.common?.showSlotIndicators ??
+      rootConfig.common?.showSlotIndicators ??
       defaults.showSlotIndicators,
     showSlotSeparator:
       viewConfig.showSlotSeparator ??
-      xCalConfig.common?.showSlotSeparator ??
+      rootConfig.common?.showSlotSeparator ??
       defaults.showSlotSeparator,
     slotDuration:
       viewConfig.slotDuration ??
-      xCalConfig.common?.slotDuration ??
+      rootConfig.common?.slotDuration ??
       defaults.slotDuration,
     slotHeight:
       viewConfig.slotHeight ??
-      xCalConfig.common?.slotHeight ??
+      rootConfig.common?.slotHeight ??
       defaults.slotHeight,
   };
 }

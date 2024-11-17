@@ -1,4 +1,4 @@
-import type { Tile } from "@/core/tilers";
+import type { Tile } from "@/core/tilers/day-tiler";
 import type { BaseEvent, ConfigOptions } from "@/types";
 
 export type WeekViewEventTileData<Event extends BaseEvent> = {} & Tile<Event>;

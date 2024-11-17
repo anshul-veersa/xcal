@@ -24,7 +24,7 @@ import { TimeUtils } from "@/core/time";
 
 import type {
   BackgroundEvent,
-  CalendarEvent,
+  TileEvent,
   CommonConfig,
   LocaleOptions,
   View,
@@ -38,7 +38,7 @@ import { keys } from "@/assets/providers/keys";
 
 type Props = {
   /** Array of events to show on the calendar. */
-  events: Array<CalendarEvent<EventData>>;
+  events: Array<TileEvent<EventData>>;
   /** Array of background events with each having a priority */
   backgroundEvents?: Array<BackgroundEvent<BackgroundEventData>>;
   /** Current view to show. */
@@ -106,7 +106,7 @@ provide(
   })
 );
 
-const activeView = computed(() => Views[props.view ?? 'day'] ?? Views['day']);
+const activeView = computed(() => Views[props.view ?? "day"] ?? Views["day"]);
 </script>
 
 <style lang="scss">

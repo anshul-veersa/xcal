@@ -1,11 +1,12 @@
+import type { CalendarData } from "@/types/data";
 import { DataContext } from "./context";
 
 export function DataProvider(props: {
-  config: number;
+  data: CalendarData<unknown, unknown>;
   children: React.ReactNode;
 }) {
   return (
-    <DataContext.Provider value={timeUtils}>
+    <DataContext.Provider value={props.data}>
       {props.children}
     </DataContext.Provider>
   );

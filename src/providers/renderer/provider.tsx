@@ -1,9 +1,9 @@
-import type { CalendarEvent, EventTileRenderFunction } from "@/types";
+import type { TileEvent, EventTileRenderFunction } from "@/types";
 import { RendererContext } from "./context";
 
 export function RendererProvider(props: {
   renderers: {
-    renderEventTile: EventTileRenderFunction<CalendarEvent>;
+    renderEventTile: EventTileRenderFunction<TileEvent>;
   };
   children: React.ReactNode;
 }) {

@@ -1,4 +1,4 @@
-import { MonthTiler } from "@/core/tilers";
+import { MonthTiler } from "@/core/tilers/month-tiler";
 import { useConfig } from "@/providers/config/context";
 import { useData } from "@/providers/data/context";
 import { useRenderer } from "@/providers/renderer/context";

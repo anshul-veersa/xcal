@@ -2,8 +2,17 @@ import type { TimeUtils } from "@/core/temporal";
 import type { BaseEventTile, BaseEvent } from "@/types";
 
 export type Tile<Event extends BaseEvent> = {
+  /**
+   * Positional and dimensional properties of the tile
+   */
   geometry: {
+    /**
+     * x-axis offset of the tile start in a week row
+     */
     xStart: number;
+    /**
+     * x-axis offset of the tile end in a week row
+     */
     xEnd: number;
   };
 } & BaseEventTile<Event>;

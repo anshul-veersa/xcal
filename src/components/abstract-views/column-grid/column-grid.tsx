@@ -1,49 +1,13 @@
 import { useEffect, useMemo } from "react";
-import type { BackgroundEvent, CalendarEvent, SlotDuration } from "@/types";
-import { DayTiler } from "@/core/tilers";
+import type { BackgroundEvent } from "@/types";
+import type { ColumnGridProps } from "./types";
+import { DayTiler } from "@/core/tilers/day-tiler";
 import { useTime } from "@/providers/temporal";
 import { ScrollSync } from "@/core/scroll-sync";
 
 import s from "./styles.module.scss";
 
-export interface ColumnGridProps<
-  TileEventData,
-  BackgroundEventData,
-  HeaderData
-> {
-  activeDate: Date;
-  config: {
-    slotDuration: SlotDuration;
-    slotHeight: number;
-    maxEventsPerSlot: number;
-    showSlotSeparator: boolean;
-    showSlotIndicators: boolean;
-    showCurrentTimeMarker: boolean;
-    showAllDaySlot: boolean;
-    hourIndicatorLabelFormat: string;
-    scrollTimeIntoView: Date;
-  };
-  columns: Array<{
-    id: number | string;
-    date: Date;
-    header: { data: HeaderData; attributes?: Record<string, unknown> };
-    events: Array<CalendarEvent<TileEventData>>;
-    backgroundEvents: Array<BackgroundEvent<BackgroundEventData>>;
-    attributes?: Record<string, unknown>;
-  }>;
-  renderHeaderItem: (headerData: HeaderData) => React.ReactNode;
-  renderTimeSlot: (headerData: {
-    id: number;
-    startTime: Date;
-    endTime: Date;
-    backgroundEvents: BackgroundEvent<BackgroundEventData>[];
-  }) => React.ReactNode;
-  renderEventTile: (data: unknown) => React.ReactNode;
-}
-
-export function ColumnGrid<TileEventData, BackgroundEventData, HeaderData>(
-  props: ColumnGridProps<TileEventData, BackgroundEventData, HeaderData>
-) {
+export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
   const t = useTime();
 
   const tiler = useMemo(() => {
@@ -85,10 +49,7 @@ export function ColumnGrid<TileEventData, BackgroundEventData, HeaderData>(
     }
 
     return props.columns.map((column) => {
-      const backgroundEventsByKey: Record<
-        number,
-        BackgroundEvent<BackgroundEventData>[]
-      > = {};
+      const backgroundEventsByKey: Record<number, BackgroundEvent[]> = {};
 
       const backgroundEventsSortedByPriority = column.backgroundEvents.toSorted(
         (e1, e2) => e2.priority - e1.priority
@@ -248,7 +209,7 @@ export function ColumnGrid<TileEventData, BackgroundEventData, HeaderData>(
                         }% + var(--tile-gap))`,
                       }}
                     >
-                      {props.renderEventTile({ event: tile.event, tile })}
+                      {props.renderEventTile(tile)}
                     </div>
                   ))}
                 </div>

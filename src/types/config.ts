@@ -3,12 +3,9 @@ import type {
   WeekViewConfig,
   GroupViewConfig,
   MonthViewConfig,
-  Views,
 } from "@/components/views";
 
 export type SlotDuration = 10 | 15 | 30 | 60;
-
-export type View = keyof typeof Views;
 
 export type ConfigOptions = {
   /**
@@ -77,7 +74,7 @@ type CommonConfig = Pick<
   | "slotHeight"
 >;
 
-export interface RootConfig<EventData, BackgroundEventData> {
+export interface RootConfig {
   /**
    * Common configuration across multiple views
    */
@@ -91,6 +88,6 @@ export interface RootConfig<EventData, BackgroundEventData> {
     day?: Partial<DayViewConfig>;
     week?: Partial<WeekViewConfig>;
     month?: Partial<MonthViewConfig>;
-    group?: Partial<GroupViewConfig<EventData, BackgroundEventData>>;
+    group?: Partial<GroupViewConfig>;
   };
 }

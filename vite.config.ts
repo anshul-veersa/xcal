@@ -12,8 +12,8 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: path.resolve(__dirname, "src/app/federated/web-components"),
-      formats: ["es"],
+      entry: path.resolve(__dirname, "src/index.ts"),
+      formats: ["es", "cjs"],
     },
     outDir: path.resolve(__dirname, "./dist"),
     emptyOutDir: true,

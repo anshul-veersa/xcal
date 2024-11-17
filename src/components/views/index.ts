@@ -1,5 +1,5 @@
 export * from "./views";
-export type { DayViewConfig } from "./day/config";
-export type { WeekViewConfig } from "./week/config";
-export type { GroupViewConfig } from "./group/config";
-export type { MonthViewConfig } from "./month/config";
+export type { DayViewConfig } from "./day/types";
+export type { WeekViewConfig } from "./week/types";
+export type { GroupViewConfig } from "./group/types";
+export type { MonthViewConfig } from "./month/types";

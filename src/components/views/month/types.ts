@@ -1,3 +1,4 @@
+import type { Tile } from "@/core/tilers/month-tiler";
 import type { BaseEvent, ConfigOptions } from "@/types";
 
 export type MonthViewTileEventData<Event extends BaseEvent> = {} & Tile<Event>;

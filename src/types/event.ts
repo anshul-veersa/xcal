@@ -1,6 +1,8 @@
 export type EventID = number | string | bigint;
 
-/** Must haves for any kind of event */
+/**
+ *  Must haves for any kind of event
+ */
 export type BaseEvent = {
   id: EventID;
   priority?: number;
@@ -9,27 +11,37 @@ export type BaseEvent = {
   endsAt: Date;
 };
 
-/** Primary kind of events that are shown as tiles */
-export type CalendarEvent<EventData = unknown> = {
-  type: "tile";
-  data: EventData;
+/**
+ * Primary kind of events that are shown as tiles
+ */
+export type TileEvent<EventData = unknown> = {
+  /** User data for the event */
+  data?: EventData;
   config?: {
     isDraggable: boolean;
     isResizable: boolean;
   };
 } & BaseEvent;
 
-/** Secondary kind of events that are shown in the background */
+/**
+ * Secondary kind of events that are shown in the background
+ */
 export type BackgroundEvent<EventData = unknown> = {
-  type: "background";
-  data: EventData;
+  /**
+   * User data for the event
+   */
+  data?: EventData;
   priority: number;
 } & BaseEvent;
 
-/** Base tile, varies across views */
-export type BaseEventTile<TileEvent extends BaseEvent> = {
+/**
+ * Base tile, varies across views
+ */
+export type BaseEventTile<Event extends TileEvent> = {
   id: number;
-  /** Specifies if the tile is continuing from start and/or end when it is clamped */
+  /**
+   * Specifies if the tile is continuing from start and/or end slots when it is clamped
+   */
   continuous: { start: boolean; end: boolean };
-  event: TileEvent;
+  event: Event;
 };

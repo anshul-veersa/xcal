@@ -1,5 +1,7 @@
-import type { View } from "./config";
-import type { BackgroundEvent, CalendarEvent } from "./event";
+import type { Views } from "@/components/views";
+import type { BackgroundEvent, TileEvent } from "./event";
+
+export type View = keyof typeof Views;
 
 export type CalendarData<EventData, BackgroundEventData> = {
   /**
@@ -15,7 +17,7 @@ export type CalendarData<EventData, BackgroundEventData> = {
    * Use `renderEventTile` render callback to display event tile
    * according to your preference.
    */
-  events: CalendarEvent<EventData>[];
+  events: TileEvent<EventData>[];
   /**
    * An array of events to render as background slot events.
    * Limits to only one event per time slot.

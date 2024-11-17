@@ -1,23 +1,23 @@
-import type { Tile } from "@/core/tilers";
+import type { Tile } from "@/core/tilers/day-tiler";
 import type {
   BackgroundEvent,
   BaseEvent,
-  CalendarEvent,
+  TileEvent,
   ConfigOptions,
 } from "@/types";
 
 export type GroupViewTileEventData<Event extends BaseEvent> = {} & Tile<Event>;
 
 export type GroupId = string | number;
-export type Group<EventData, BackgroundEventData> = {
+export type Group<EventData = unknown, BackgroundEventData = unknown> = {
   id: GroupId;
-  events: CalendarEvent<EventData>[];
+  events: TileEvent<EventData>[];
   backgroundEvents?: BackgroundEvent<BackgroundEventData>[];
 };
 
-export type GroupViewConfig<T, B> = {
-  groupSelector: (event: CalendarEvent<T> | BackgroundEvent<B>) => GroupId;
-  groupOrderer: (groups: Group<T, B>[]) => Group<T, B>[];
+export type GroupViewConfig = {
+  groupSelector: (event: TileEvent | BackgroundEvent) => GroupId;
+  groupOrderer: (groups: Group[]) => Group[];
 } & Pick<
   ConfigOptions,
   | "slotDuration"

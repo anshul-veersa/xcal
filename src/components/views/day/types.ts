@@ -1,5 +1,5 @@
-import type { Tile } from "@/core/tilers";
-import type { BaseEvent, ConfigOptions } from "@/types";
+import type { Tile } from "@/core/tilers/day-tiler";
+import type { BackgroundEvent, BaseEvent, ConfigOptions } from "@/types";
 
 export type DayViewEventTileData<Event extends BaseEvent> = {} & Tile<Event>;
 
@@ -15,3 +15,13 @@ export type DayViewConfig = {} & Pick<
   | "hourIndicatorLabelFormat"
   | "slotHeight"
 >;
+
+export type DayViewHeaderItem = {
+  date: Date;
+};
+
+export type DayViewTimeSlot<BackgroundEventData> = {
+  startTime: Date;
+  endTime: Date;
+  backgroundEvents: BackgroundEvent<BackgroundEventData>[];
+};

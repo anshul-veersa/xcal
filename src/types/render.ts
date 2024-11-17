@@ -1,23 +1,27 @@
-import type { DayViewEventTileData } from "@/components/views/day/types";
-import type { View } from "./config";
+import type {
+  DayViewEventTileData,
+  DayViewHeaderItem,
+  DayViewTimeSlot,
+} from "@/components/views/day/types";
+import type { View } from "./data";
 import type { BaseEvent } from "./event";
 import type { WeekViewEventTileData } from "@/components/views/week/types";
 import type { GroupViewTileEventData } from "@/components/views/group/types";
 import type { MonthViewTileEventData } from "@/components/views/month/types";
 
-type RenderFunction<T = unknown> = (props: T) => React.ReactNode;
+export type RenderFunction<T = unknown> = (props: T) => React.ReactNode;
 
 type ViewSpecificEventTileData<ForView extends View, TileData> = {
   view: ForView;
   tile: TileData;
 };
 
-export type EventTileRenderFunction<CalendarEvent extends BaseEvent> =
+export type EventTileRenderFunction<TileEvent extends BaseEvent> =
   RenderFunction<
-    | ViewSpecificEventTileData<"day", DayViewEventTileData<CalendarEvent>>
-    | ViewSpecificEventTileData<"week", WeekViewEventTileData<CalendarEvent>>
-    | ViewSpecificEventTileData<"group", GroupViewTileEventData<CalendarEvent>>
-    | ViewSpecificEventTileData<"month", MonthViewTileEventData<CalendarEvent>>
+    | ViewSpecificEventTileData<"day", DayViewEventTileData<TileEvent>>
+    | ViewSpecificEventTileData<"week", WeekViewEventTileData<TileEvent>>
+    | ViewSpecificEventTileData<"group", GroupViewTileEventData<TileEvent>>
+    | ViewSpecificEventTileData<"month", MonthViewTileEventData<TileEvent>>
   >;
 
 type ViewSpecificHeaderItemData<ForView extends View, Data> = {
@@ -26,7 +30,7 @@ type ViewSpecificHeaderItemData<ForView extends View, Data> = {
 };
 
 export type HeaderItemRenderFunction = RenderFunction<
-  | ViewSpecificHeaderItemData<"day", unknown>
+  | ViewSpecificHeaderItemData<"day", DayViewHeaderItem>
   | ViewSpecificHeaderItemData<"week", unknown>
   | ViewSpecificHeaderItemData<"group", unknown>
   | ViewSpecificHeaderItemData<"month", unknown>
@@ -37,9 +41,11 @@ type ViewSpecificTimeSlotData<ForView extends View, TimeSlotData> = {
   slot: TimeSlotData;
 };
 
-export type TimeSlotRenderFunction = RenderFunction<
-  | ViewSpecificTimeSlotData<"day", unknown>
+export type TimeSlotRenderFunction<BackgroundEventData> = RenderFunction<
+  | ViewSpecificTimeSlotData<"day", DayViewTimeSlot<BackgroundEventData>>
   | ViewSpecificTimeSlotData<"week", unknown>
   | ViewSpecificTimeSlotData<"group", unknown>
   | ViewSpecificTimeSlotData<"month", unknown>
 >;
+
+export type DataAttributes = Record<string, unknown>;

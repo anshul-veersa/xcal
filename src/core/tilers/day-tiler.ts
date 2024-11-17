@@ -1,13 +1,31 @@
 import type { TimeUtils } from "@/core/temporal";
 import { arrayToMap, clamp } from "@/core/utils";
-import type { BaseEventTile, BaseEvent } from "@/types";
+import type { BaseEventTile, TileEvent } from "@/types";
 
-export type Tile<Event extends BaseEvent> = {
+/**
+ * Day view tile representaion
+ */
+export type Tile<Event extends TileEvent> = {
   columnIndex: number;
+  /**
+   * Positional and dimensional properties of the tile
+   */
   geometry: {
+    /**
+     * x-axis offset of the tile start from left edge of containing column
+     */
     xOffset: number;
+    /**
+     * Ratio of width of the tile with respect to the column width
+     */
     width: number;
+    /**
+     * Starting line of the tile on y-axis
+     */
     yStart: number;
+    /**
+     * Ending line of the tile on y-axis
+     */
     yEnd: number;
   };
   link: {
@@ -16,7 +34,7 @@ export type Tile<Event extends BaseEvent> = {
   };
 } & BaseEventTile<Event>;
 
-type Column<Event extends BaseEvent> = {
+type Column<Event extends TileEvent> = {
   bottomEnd: Date;
   lastTile: Tile<Event>;
 };
@@ -30,7 +48,7 @@ type TilerConfig = {
 
 const UNSET_VALUE = -1;
 
-export class DayTiler<Event extends BaseEvent> {
+export class DayTiler<Event extends TileEvent> {
   private slotsInDay: number;
   private range: { start: Date; end: Date } = {
     start: new Date(),
