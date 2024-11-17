@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { XCal } from "@/components/root/x-cal";
+import { createDayData, createMonthData } from "./mock/events";
+import { DayViewTile } from "./auxiliary-components";
 
 const meta = {
   title: "XCal",
@@ -17,25 +19,31 @@ export const DayView: Story = {
   args: {
     view: "day",
     date: new Date(),
-    backgroundEvents: [
-      {
-        data: { f: 1 },
-        endsAt: new Date(),
-        startsAt: new Date(),
-        id: 1,
-        priority: 1,
-      },
-    ],
-    events: [
-      {
-        id: 1,
-        startsAt: new Date("2024-11-17"),
-        endsAt: new Date(),
-        data: {
-          myData: 1,
-        },
-      },
-    ],
-    renderEventTile: (k) => (k.view === "day" ? <div>{1}</div> : null),
+    backgroundEvents: [],
+    events: createDayData(new Date(), 20),
+    renderEventTile: DayViewTile,
+    common: { maxViewHeight: 500 },
+  },
+};
+
+export const WeekView: Story = {
+  args: {
+    view: "week",
+    date: new Date(),
+    backgroundEvents: [],
+    events: createMonthData(new Date(), 100),
+    renderEventTile: DayViewTile,
+    common: { maxViewHeight: 500 },
+  },
+};
+
+export const MonthView: Story = {
+  args: {
+    view: "month",
+    date: new Date(),
+    backgroundEvents: [],
+    events: createMonthData(new Date(), 100),
+    renderEventTile: DayViewTile,
+    common: { maxViewHeight: 500 },
   },
 };
