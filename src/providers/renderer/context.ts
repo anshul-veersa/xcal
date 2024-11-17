@@ -11,7 +11,7 @@ type RendererContextType = {
   renderEventTile: EventTileRenderFunction<TileEvent>;
   renderHeaderItem?: HeaderItemRenderFunction;
   renderTimeSlot?: TimeSlotRenderFunction;
-  renderTimeGridCorner: TimeGridCornerRenderFunction;
+  renderTimeGridCorner?: TimeGridCornerRenderFunction;
 };
 
 export const RendererContext = createContext<RendererContextType | null>(null);

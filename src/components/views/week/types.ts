@@ -29,7 +29,6 @@ export type WeekViewConfig = {
 
 export type WeekViewHeaderItem = {
   date: Date;
-  day: Weekday;
 };
 
 export type WeekViewTimeSlot<BackgroundEventData> = {

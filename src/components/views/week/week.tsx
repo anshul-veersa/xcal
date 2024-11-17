@@ -33,7 +33,7 @@ export default function WeekView() {
         id: +day,
         date: day,
         header: {
-          data: { date: day, day: "" },
+          data: { date: day },
           attributes: {
             "data-week-day": day,
             "data-date": day,

@@ -27,7 +27,6 @@ export type GroupViewConfig = {
 >;
 
 export type GroupViewTimeSlot<BackgroundEventData> = {
-  group: Group<unknown, BackgroundEventData>;
   startTime: Date;
   endTime: Date;
   backgroundEvents: BackgroundEvent<BackgroundEventData>[];
