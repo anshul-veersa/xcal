@@ -1,20 +1,23 @@
-import { ColumnGrid, type TimeSlot } from "@/components/abstract-views";
-import { useConfig } from "@/providers/config/context";
-import { useData } from "@/providers/data/context";
-import { useRenderer } from "@/providers/renderer/context";
+import { useCallback } from "react";
+
+import { useConfig } from "@/providers/config";
+import { useData } from "@/providers/data";
+import { useRenderer } from "@/providers/renderer";
+import { useTime } from "@/providers/temporal";
+import { useCallbacks } from "@/providers/callbacks";
 import { adaptConfig } from "./config";
 import type { DayViewHeaderItem } from "./types";
-import { useCallback } from "react";
-import type { TileEvent } from "@/types";
 import type { Tile } from "@/core/tilers/day-tiler";
+import type { TileEvent } from "@/types";
+import { ColumnGrid, type TimeSlot } from "@/components/abstract-views";
 
 import s from "./styles.module.scss";
-import { useTime } from "@/providers/temporal";
 
 export default function DayView() {
   const config = useConfig(adaptConfig);
   const data = useData();
   const renderer = useRenderer();
+  const callbacks = useCallbacks();
 
   const t = useTime();
 
@@ -77,6 +80,8 @@ export default function DayView() {
         renderHeaderItem={renderHeaderItem}
         renderTimeSlot={renderTimeSlot}
         renderCorner={renderer.renderTimeGridCorner}
+        onEventUpdate={callbacks.onEventUpdate}
+        onSlotClick={callbacks.onSlotClick}
       />
     </div>
   );

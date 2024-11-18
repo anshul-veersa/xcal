@@ -3,7 +3,9 @@ import type {
   BackgroundEvent,
   ConfigOptions,
   DataAttributes,
+  EventUpdateCallback,
   RenderFunction,
+  SlotClickCallback,
   TileEvent,
 } from "@/types";
 
@@ -42,4 +44,6 @@ export interface ColumnGridProps<HeaderData> {
   renderTimeSlot: RenderFunction<TimeSlot>;
   renderEventTile: RenderFunction<Tile<TileEvent>>;
   renderCorner?: RenderFunction;
+  onEventUpdate?: EventUpdateCallback<unknown>;
+  onSlotClick?: SlotClickCallback;
 }

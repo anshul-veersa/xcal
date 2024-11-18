@@ -16,7 +16,7 @@ type RendererContextType = {
 
 export const RendererContext = createContext<RendererContextType | null>(null);
 
-/** Use events and other data */
+/** Use slot renderers */
 export function useRenderer() {
   const renderers = useContext(RendererContext);
 

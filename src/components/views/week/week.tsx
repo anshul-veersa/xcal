@@ -1,20 +1,23 @@
+import { useCallback, useMemo } from "react";
+
 import { ColumnGrid, type TimeSlot } from "@/components/abstract-views";
-import { useConfig } from "@/providers/config/context";
-import { useData } from "@/providers/data/context";
-import { useRenderer } from "@/providers/renderer/context";
+import { useConfig } from "@/providers/config";
+import { useData } from "@/providers/data";
+import { useRenderer } from "@/providers/renderer";
 import { adaptConfig } from "./config";
 import type { WeekViewHeaderItem } from "./types";
-import { useCallback, useMemo } from "react";
 import type { TileEvent } from "@/types";
 import type { Tile } from "@/core/tilers/day-tiler";
 import { useTime } from "@/providers/temporal";
 
 import s from "./styles.module.scss";
+import { useCallbacks } from "@/providers/callbacks";
 
 export default function WeekView() {
   const config = useConfig(adaptConfig);
   const data = useData();
   const renderer = useRenderer();
+  const callbacks = useCallbacks();
 
   const t = useTime();
 
@@ -94,6 +97,8 @@ export default function WeekView() {
         renderHeaderItem={renderHeaderItem}
         renderTimeSlot={renderTimeSlot}
         renderCorner={renderer.renderTimeGridCorner}
+        onEventUpdate={callbacks.onEventUpdate}
+        onSlotClick={callbacks.onSlotClick}
       />
     </div>
   );

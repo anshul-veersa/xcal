@@ -1,10 +1,12 @@
-import { MonthTiler } from "@/core/tilers/month-tiler";
-import { useConfig } from "@/providers/config/context";
-import { useData } from "@/providers/data/context";
-import { useRenderer } from "@/providers/renderer/context";
-import { useTime } from "@/providers/temporal";
-import clsx from "clsx";
 import { useMemo } from "react";
+import clsx from "clsx";
+
+import { useConfig } from "@/providers/config";
+import { useData } from "@/providers/data";
+import { useRenderer } from "@/providers/renderer";
+import { useCallbacks } from "@/providers/callbacks";
+import { useTime } from "@/providers/temporal";
+import { MonthTiler } from "@/core/tilers/month-tiler";
 import { adaptConfig } from "./config";
 
 import s from "./styles.module.scss";
@@ -14,6 +16,7 @@ export default function MonthView() {
   const data = useData();
   const renderer = useRenderer();
   const t = useTime();
+  const callbacks = useCallbacks();
 
   const weekDays = useMemo(() => {
     return t.daysOfWeek().map((d) => ({ ...d, label: d.label.toUpperCase() }));
@@ -102,6 +105,7 @@ export default function MonthView() {
                   key={day.id}
                   className={clsx({ today: day.isToday }, s["day-cell"])}
                   data-date={day.id}
+                  onClick={callbacks.onSlotClick?.()}
                 >
                   <div className={s["day-cell__info"]}>
                     <span className={s["date-label"]}>{day.label}</span>

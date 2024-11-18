@@ -49,10 +49,10 @@ export function createMonthData(
 export function createDayData(
   date: Date,
   count: number
-): Array<TileEvent<unknown>> {
+): Array<TileEvent<{ title: string }>> {
   const [from, to] = [
     addMinutes(startOfDay(date), 0),
-    subMinutes(endOfDay(date), 180),
+    subMinutes(endOfDay(date), 120),
   ];
   return Array.from({ length: count }, () =>
     createEvent(

@@ -21,18 +21,58 @@
   border-top-right-radius: 0;
 }
 
-.bg-event {
-  background-color: #f45a121e;
-  pointer-events: none;
-  height: 100%;
+.month-view-tile {
   display: flex;
-  justify-content: center;
-  color: #fe011f46;
-  font-weight: 500;
   align-items: center;
+  gap: 4px;
+  height: 24px;
+  width: 100%;
+  padding: 2px 4px;
+  line-height: 1;
+  border-radius: 3px;
+
+  background-color: #dae4fb9a;
+  white-space: nowrap;
+  overflow: hidden;
+
+  cursor: pointer;
+
+  .content {
+    display: flex;
+    flex-shrink: 1;
+    flex-grow: 0;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    width: calc(100% - 10px);
+  }
+  .icon {
+    width: 12px;
+    flex-shrink: 0;
+  }
+
+  .title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #356beb;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .time {
+    margin-left: auto;
+    font-size: 10px;
+    color: #929292;
+  }
+
+  &:hover {
+    background-color: #dae4fb;
+  }
 }
 
-.calendar {
-  width: 90vw;
-  height: 80vh;
+.tile-vertical-bar {
+  height: 80%;
+  border-radius: 10px;
+  background-color: #356beb;
+  flex: 0 0 2.5px;
 }

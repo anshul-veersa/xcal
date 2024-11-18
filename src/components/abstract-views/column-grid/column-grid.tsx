@@ -80,7 +80,8 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
             id: i,
             startTime,
             endTime,
-            backgroundEvents: backgroundEventsByKey[getSlotKey(startTime)],
+            backgroundEvents:
+              backgroundEventsByKey[getSlotKey(startTime)] ?? [],
           };
         }),
       };
@@ -188,7 +189,11 @@ export function ColumnGrid<HeaderData>(props: ColumnGridProps<HeaderData>) {
               >
                 <div className={s["slots-layer"]}>
                   {slotsByColumn[colIdx].slots.map((timeSlot) => (
-                    <div key={timeSlot.id} className={s["slot"]}>
+                    <div
+                      key={timeSlot.id}
+                      className={s["slot"]}
+                      onClick={() => props.onSlotClick?.(timeSlot)}
+                    >
                       {props.renderTimeSlot(timeSlot)}
                     </div>
                   ))}

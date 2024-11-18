@@ -1,18 +1,21 @@
-import { ColumnGrid, type TimeSlot } from "@/components/abstract-views";
-import { useConfig } from "@/providers/config/context";
-import { useData } from "@/providers/data/context";
-import { useRenderer } from "@/providers/renderer/context";
+import { useCallback, useMemo } from "react";
+
+import { useConfig } from "@/providers/config";
+import { useData } from "@/providers/data";
+import { useRenderer } from "@/providers/renderer";
+import { useCallbacks } from "@/providers/callbacks";
+import { groupBy } from "@/core/utils";
+import type { Tile } from "@/core/tilers/day-tiler";
+import type { TileEvent } from "@/types";
 import { adaptConfig } from "./config";
 import type { GroupViewHeaderItem } from "./types";
-import { useCallback, useMemo } from "react";
-import type { TileEvent } from "@/types";
-import type { Tile } from "@/core/tilers/day-tiler";
-import { groupBy } from "@/core/utils";
+import { ColumnGrid, type TimeSlot } from "@/components/abstract-views";
 
 export default function GroupView() {
   const config = useConfig(adaptConfig);
   const data = useData();
   const renderer = useRenderer();
+  const callbacks = useCallbacks();
 
   const groups = useMemo(() => {
     const eventsByGroup = groupBy(data.events, config.groupSelector);
@@ -89,6 +92,8 @@ export default function GroupView() {
         renderHeaderItem={renderHeaderItem}
         renderTimeSlot={renderTimeSlot}
         renderCorner={renderer.renderTimeGridCorner}
+        onEventUpdate={callbacks.onEventUpdate}
+        onSlotClick={callbacks.onSlotClick}
       />
     </div>
   );
