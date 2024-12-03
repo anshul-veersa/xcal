@@ -42,8 +42,25 @@ export class MonthTiler<Event extends TileEvent> {
     const calendarStartDate = range.from;
     const calendarEndDate = range.to;
 
+    // Splits the recurring events into individual occurrences/events
+    const eventOccurrences = events.flatMap((event) => {
+      if (!event.recurrencePattern) return [event];
+      const rrule = this.time.parseRecurrencePattern(event.recurrencePattern);
+      const occurrences = rrule.between(range.from, range.to, true);
+      return occurrences.map((occurrence) => ({
+        ...event,
+        startsAt: occurrence,
+        endsAt: new Date(
+          occurrence.getTime() +
+            (new Date(event.endsAt).getTime() -
+              new Date(event.startsAt).getTime())
+        ),
+      }));
+    });
+
+    // TODO: Consider out of range events
     /** Events filtered for visible range, sorted by their row placement priority. */
-    const eventsInRange = events
+    const eventsInRange = eventOccurrences
       .filter((e) =>
         t.isBetween(e.startsAt, {
           start: range.from,
@@ -71,7 +88,7 @@ export class MonthTiler<Event extends TileEvent> {
       },
     };
 
-    /** Layout of events. */
+    /** Layout of events */
     const eventSeries: Record<string, { eventTiles: Tile<Event>[] }> =
       Object.fromEntries(
         t

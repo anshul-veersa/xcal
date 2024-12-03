@@ -23,6 +23,21 @@ export default function MonthView() {
   }, [t]);
 
   /**
+   * Flat array of each date shown on the calendar.
+   */
+  const calendarDates = useMemo(() => {
+    const calendarStart = t.startOfWeek(t.startOfMonth(data.date));
+    const calendarEnd = t.endOfWeek(t.endOfMonth(data.date));
+
+    const datesOnCalendar = t.eachDayOfInterval({
+      start: calendarStart,
+      end: calendarEnd,
+    });
+
+    return datesOnCalendar;
+  }, [data.date]);
+
+  /**
    * Dates of the month arranged week wise with specified locale.
    */
   type MonthWeeks = Array<{
@@ -35,18 +50,10 @@ export default function MonthView() {
     }>;
   }>;
   const monthWeeks = useMemo<MonthWeeks>(() => {
-    const calendarStart = t.startOfWeek(t.startOfMonth(data.date));
-    const calendarEnd = t.endOfWeek(t.endOfMonth(data.date));
-
-    const datesOnCalendar = t.eachDayOfInterval({
-      start: calendarStart,
-      end: calendarEnd,
-    });
-
     const weeklyDates: Record<number, MonthWeeks[number]> = {};
-    for (let d = 0; d < datesOnCalendar.length; d += 7) {
-      const week = t.getWeek(datesOnCalendar[d]);
-      const days = datesOnCalendar.slice(d, d + 7).map((d) => ({
+    for (let d = 0; d < calendarDates.length; d += 7) {
+      const week = t.getWeek(calendarDates[d]);
+      const days = calendarDates.slice(d, d + 7).map((d) => ({
         id: t.format(d, "yyyy-MM-dd"),
         date: d,
         label: t.format(d, "d"),
@@ -58,14 +65,7 @@ export default function MonthView() {
       };
     }
     return Object.values(weeklyDates);
-  }, [data.date, t]);
-
-  /**
-   * Flat array of each date shown on the calendar.
-   */
-  const calendarDates = useMemo(() => {
-    return Object.entries(monthWeeks).flatMap(([_, d]) => d.days);
-  }, [monthWeeks]);
+  }, [calendarDates]);
 
   const tiler = useMemo(
     () => new MonthTiler({ maxPerSlot: config.maxEventsPerSlot }, t),
@@ -78,8 +78,8 @@ export default function MonthView() {
   const layoutEventTiles = useMemo(() => {
     const layoutTiles = tiler.getLayoutTiles(data.events, {
       range: {
-        from: calendarDates.at(0)!.date,
-        to: calendarDates.at(-1)!.date,
+        from: calendarDates.at(0)!,
+        to: calendarDates.at(-1)!,
       },
     });
 
