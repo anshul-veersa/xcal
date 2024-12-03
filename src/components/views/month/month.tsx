@@ -105,7 +105,14 @@ export default function MonthView() {
                   key={day.id}
                   className={clsx({ today: day.isToday }, s["day-cell"])}
                   data-date={day.id}
-                  onClick={callbacks.onSlotClick?.()}
+                  onClick={() =>
+                    callbacks.onSlotClick?.({
+                      backgroundEvents: [],
+                      endTime: t.endOfDay(day.date),
+                      startTime: t.startOfDay(day.date),
+                      id: +day.date,
+                    })
+                  }
                 >
                   <div className={s["day-cell__info"]}>
                     <span className={s["date-label"]}>{day.label}</span>
