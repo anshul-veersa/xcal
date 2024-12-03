@@ -23,6 +23,7 @@ import {
   roundToNearestMinutes,
   isSameMinute,
 } from "date-fns";
+import { rrulestr } from "rrule";
 
 export class TimeUtils {
   constructor(private readonly locale: Partial<Locale>) {}
@@ -124,4 +125,9 @@ export class TimeUtils {
   get minutesInDay() {
     return 1440;
   }
+
+  // Recurrece Utilities
+  parseRecurrencePattern = (pattern: string) => {
+    return rrulestr(pattern, { compatible: true });
+  };
 }

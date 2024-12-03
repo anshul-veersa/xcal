@@ -184,8 +184,24 @@ export class DayTiler<Event extends TileEvent> {
       end: this.time.endOfDay(options.date),
     };
 
+    // Splits the recurring events into individual occurrences/events
+    const eventOccurrences = events.flatMap((event) => {
+      if (!event.recurrencePattern) return [event];
+      const rrule = this.time.parseRecurrencePattern(event.recurrencePattern);
+      const occurrences = rrule.between(this.range.start, this.range.end, true);
+      return occurrences.map((occurrence) => ({
+        ...event,
+        startsAt: occurrence,
+        endsAt: new Date(
+          occurrence.getTime() +
+            (new Date(event.endsAt).getTime() -
+              new Date(event.startsAt).getTime())
+        ),
+      }));
+    });
+
     // Create tiles from events
-    const eventTiles = this.createTiles(events);
+    const eventTiles = this.createTiles(eventOccurrences);
 
     // Arrange tiles by earliest and lengthiest first
     eventTiles.sort(
