@@ -9,6 +9,8 @@
   flex-flow: column nowrap;
 
   border: 0.5px solid rgb(216, 216, 216);
+
+  max-height: calc(var(--max-view-height) * 1px);
 }
 
 .month-week {
