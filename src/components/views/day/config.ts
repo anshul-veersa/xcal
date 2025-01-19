@@ -1,57 +1,67 @@
-import type { RootConfig } from "@/types";
+import type { LocaleOptions, RootConfig } from "@/types";
 import type { DayViewConfig } from "./types";
+import * as dfn from "@/core/temporal";
 
-export function adaptConfig(rootConfig: RootConfig): DayViewConfig {
-  const viewConfig = rootConfig.views?.day ?? {};
+export const getConfigAdapter =
+  (locale: LocaleOptions) =>
+  (rootConfig: RootConfig): DayViewConfig => {
+    const viewConfig = rootConfig.views?.day ?? {};
 
-  return {
-    hourIndicatorLabelFormat:
-      viewConfig.hourIndicatorLabelFormat ??
-      rootConfig.common?.hourIndicatorLabelFormat ??
-      defaults.hourIndicatorLabelFormat,
-    maxEventsPerSlot:
-      viewConfig.maxEventsPerSlot ??
-      rootConfig.common?.maxEventsPerSlot ??
-      defaults.maxEventsPerSlot,
-    scrollTimeIntoView:
-      viewConfig.scrollTimeIntoView ??
-      rootConfig.common?.scrollTimeIntoView ??
-      defaults.scrollTimeIntoView,
-    showAllDaySlot:
-      viewConfig.showAllDaySlot ??
-      rootConfig.common?.showAllDaySlot ??
-      defaults.showAllDaySlot,
-    showCurrentTimeMarker:
-      viewConfig.showCurrentTimeMarker ??
-      rootConfig.common?.showCurrentTimeMarker ??
-      defaults.showCurrentTimeMarker,
-    showSlotIndicators:
-      viewConfig.showSlotIndicators ??
-      rootConfig.common?.showSlotIndicators ??
-      defaults.showSlotIndicators,
-    showSlotSeparator:
-      viewConfig.showSlotSeparator ??
-      rootConfig.common?.showSlotSeparator ??
-      defaults.showSlotSeparator,
-    slotDuration:
-      viewConfig.slotDuration ??
-      rootConfig.common?.slotDuration ??
-      defaults.slotDuration,
-    slotHeight:
-      viewConfig.slotHeight ??
-      rootConfig.common?.slotHeight ??
-      defaults.slotHeight,
+    const defaults = getDefaults(locale);
+
+    return {
+      maxEventsPerSlot:
+        viewConfig.maxEventsPerSlot ??
+        rootConfig.config?.maxEventsPerSlot ??
+        defaults.maxEventsPerSlot,
+      initialTimeAtTop:
+        viewConfig.initialTimeAtTop ??
+        rootConfig.config?.initialTimeAtTop ??
+        defaults.initialTimeAtTop,
+      showAllDaySlot:
+        viewConfig.showAllDaySlot ??
+        rootConfig.config?.showAllDaySlot ??
+        defaults.showAllDaySlot,
+      showCurrentTimeMarker:
+        viewConfig.showCurrentTimeMarker ??
+        rootConfig.config?.showCurrentTimeMarker ??
+        defaults.showCurrentTimeMarker,
+      showSlotIndicators:
+        viewConfig.showSlotIndicators ??
+        rootConfig.config?.showSlotIndicators ??
+        defaults.showSlotIndicators,
+      showSlotSeparator:
+        viewConfig.showSlotSeparator ??
+        rootConfig.config?.showSlotSeparator ??
+        defaults.showSlotSeparator,
+      slotDuration:
+        viewConfig.slotDuration ??
+        rootConfig.config?.slotDuration ??
+        defaults.slotDuration,
+      slotHeight:
+        viewConfig.slotHeight ??
+        rootConfig.config?.slotHeight ??
+        defaults.slotHeight,
+      dayRange: viewConfig.dayRange ?? defaults.dayRange,
+      useTimeZonedEvents:
+        viewConfig.useTimeZonedEvents ?? defaults.useTimeZonedEvents,
+    };
   };
-}
 
-const defaults: DayViewConfig = {
-  hourIndicatorLabelFormat: "hh:mm",
-  maxEventsPerSlot: 30,
-  scrollTimeIntoView: new Date(),
-  showAllDaySlot: true,
-  showCurrentTimeMarker: true,
-  showSlotIndicators: false,
-  showSlotSeparator: false,
-  slotDuration: 30,
-  slotHeight: 32,
+const getDefaults = (locale: LocaleOptions): DayViewConfig => {
+  return {
+    maxEventsPerSlot: 30,
+    initialTimeAtTop: dfn.now(locale),
+    showAllDaySlot: true,
+    showCurrentTimeMarker: true,
+    showSlotIndicators: false,
+    showSlotSeparator: false,
+    slotDuration: 30,
+    slotHeight: "32px",
+    useTimeZonedEvents: false,
+    dayRange: {
+      start: dfn.startOfDay(dfn.today(locale), locale),
+      end: dfn.endOfDay(dfn.today(locale), locale),
+    },
+  };
 };

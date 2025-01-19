@@ -1,2 +1,2 @@
-export * from "./column-grid/column-grid";
-export * from "./column-grid/types";
+export * from "./time-grid/time-grid";
+export * from "./time-grid/types";

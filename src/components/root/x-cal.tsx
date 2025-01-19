@@ -1,37 +1,42 @@
-import { ConfigProvider } from "@/providers/config";
-import { TimeProvider } from "@/providers/temporal";
-import { RendererProvider } from "@/providers/renderer";
-import { DataProvider } from "@/providers/data";
-import { CallbacksProvider } from "@/providers/callbacks";
+import clsx from "clsx";
+
+import type { RootConfig, CalendarData, RenderFunctions } from "@/types";
+import { mergeDefaults } from "@/core/utils";
+import {
+  ConfigProvider,
+  RendererProvider,
+  DataProvider,
+  LocaleProvider,
+} from "@/providers";
 import { Views } from "@/components/views";
 import { defaults } from "./defaults";
 
-import type {
-  RootConfig,
-  CalendarData,
-  RenderFunctions,
-  Callbacks,
-} from "@/types";
-
 import s from "@/design/base.module.scss";
 
-type XCalProps<EventData, BackgroundEventData> = Partial<Callbacks<EventData>> &
+type XCalProps<EventData, BackgroundEventData> = RootConfig &
   RenderFunctions<EventData, BackgroundEventData> &
-  RootConfig &
   Omit<CalendarData<EventData, BackgroundEventData>, "backgroundEvents"> &
   Partial<
     Pick<CalendarData<EventData, BackgroundEventData>, "backgroundEvents">
-  >;
+  > & {
+    className?: string;
+  } & { style?: React.CSSProperties };
 
+/**
+ * Root component to use XCal Events Calendar
+ */
 export function XCal<EventData, BackgroundEventData>(
-  props: XCalProps<EventData, BackgroundEventData>
+  props: XCalProps<EventData, BackgroundEventData>,
+  ref: React.Ref<HTMLDivElement>
 ) {
   const ActiveView = Views[props.view] ?? defaults.view;
 
+  const localeWithDefaults = mergeDefaults(props.locale ?? {}, defaults.locale);
+
   return (
     <ConfigProvider config={props}>
-      <RendererProvider renderers={props as RenderFunctions<unknown, unknown>}>
-        <CallbacksProvider callbacks={props as Callbacks<unknown>}>
+      <LocaleProvider locale={localeWithDefaults}>
+        <RendererProvider renderers={props as RenderFunctions}>
           <DataProvider
             data={{
               backgroundEvents: props.backgroundEvents ?? [],
@@ -40,21 +45,16 @@ export function XCal<EventData, BackgroundEventData>(
               view: props.view,
             }}
           >
-            <TimeProvider locale={props.locale}>
-              <div
-                className={s["x-cal"]}
-                style={
-                  {
-                    "--max-view-height": props.common?.maxViewHeight,
-                  } as React.CSSProperties
-                }
-              >
-                {<ActiveView.Component />}
-              </div>
-            </TimeProvider>
+            <div
+              ref={ref}
+              style={props.style}
+              className={clsx(s.xCal, props.className)}
+            >
+              <ActiveView.Component />
+            </div>
           </DataProvider>
-        </CallbacksProvider>
-      </RendererProvider>
+        </RendererProvider>
+      </LocaleProvider>
     </ConfigProvider>
   );
 }

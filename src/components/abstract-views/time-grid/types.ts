@@ -1,13 +1,14 @@
-import type { Tile } from "@/core/tilers/day-tiler";
+import type { Tile } from "@/core/tilers/time-grid-tiler";
 import type {
   BackgroundEvent,
   ConfigOptions,
-  DataAttributes,
-  EventUpdateCallback,
+  LocaleOptions,
   RenderFunction,
-  SlotClickCallback,
   TileEvent,
+  TimeRange,
 } from "@/types";
+
+type DataAttributes = Record<string, unknown>;
 
 export type Column<HeaderData> = {
   id: number | string;
@@ -25,8 +26,8 @@ export type TimeSlot = {
   backgroundEvents: BackgroundEvent[];
 };
 
-export interface ColumnGridProps<HeaderData> {
-  activeDate: Date;
+export interface TimeGridProps<HeaderData> {
+  locale: LocaleOptions;
   config: Pick<
     ConfigOptions,
     | "slotDuration"
@@ -36,14 +37,12 @@ export interface ColumnGridProps<HeaderData> {
     | "showSlotIndicators"
     | "showCurrentTimeMarker"
     | "showAllDaySlot"
-    | "hourIndicatorLabelFormat"
-    | "scrollTimeIntoView"
-  >;
+    | "initialTimeAtTop"
+    | "useTimeZonedEvents"
+  > & { dayRange: TimeRange };
   columns: Array<Column<HeaderData>>;
   renderHeaderItem: RenderFunction<HeaderData>;
   renderTimeSlot: RenderFunction<TimeSlot>;
   renderEventTile: RenderFunction<Tile<TileEvent>>;
-  renderCorner?: RenderFunction;
-  onEventUpdate?: EventUpdateCallback<unknown>;
-  onSlotClick?: SlotClickCallback;
+  renderCorner?: RenderFunction<undefined>;
 }

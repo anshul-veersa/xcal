@@ -1,16 +1,21 @@
 import { format } from "date-fns";
 import s from "./styles.module.scss";
+import type { EventTileRenderFunction, TileEvent } from "@/types";
 
-export function MonthViewTile({
-  tile,
-}: {
-  tile: { event: { data: { title: string; color: string }; startsAt: Date } };
-}) {
+export const MonthViewTile: EventTileRenderFunction<
+  TileEvent<{ title: string }>
+> = (props) => {
+  if (props.view !== "month") return null;
+
   return (
-    <div className={s["month-view-tile"]}>
+    <div
+      className={s["month-view-tile"]}
+      data-start={format(props.data.event.startsAt, "HH:mm dd/MM/yyy")}
+      data-end={format(props.data.event.endsAt, "HH:mm dd/MM/yyy")}
+    >
       <div className={s["tile-vertical-bar"]}></div>
       <div className={s["content"]}>
-        <span className={s["title"]}>{tile.event.data.title}</span>
+        <span className={s["title"]}>{props.data.event.data.title}</span>
 
         {Math.random() > 0.7 ? (
           <svg
@@ -24,9 +29,9 @@ export function MonthViewTile({
         ) : null}
 
         <span className={s["time"]}>
-          {format(tile.event.startsAt, "hh:mm a")}
+          {format(props.data.event.startsAt, "hh:mm a")}
         </span>
       </div>
     </div>
   );
-}
+};

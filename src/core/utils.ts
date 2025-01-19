@@ -1,3 +1,7 @@
+/**
+ * Converts an array to map of key:value,
+ * any key appearing twice will be overrided by the last value
+ */
 export function arrayToMap<K extends PropertyKey, T>(
   items: Array<T>,
   keySelector: (item: T, index: number) => K
@@ -10,24 +14,17 @@ export function arrayToMap<K extends PropertyKey, T>(
   return map;
 }
 
-export function clamp(min: number, max: number, value: number) {
+/**
+ * Clamps a number value between a min and max
+ */
+export function clamp(min: number, max: number, value: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
-export function groupBy<K extends PropertyKey, T>(
-  items: Array<T>,
-  keySelector: (item: T, index: number) => K
-): Partial<Record<K, T[]>> {
-  const group: Partial<Record<K, T[]>> = {};
-  items.forEach((item, i) => {
-    const key = keySelector(item, i);
-    if (!group[key]) group[key] = [];
-    group[key].push(item);
-  });
-  return group;
-}
-
-export function areOverlapping(elementA: Element, elementB: Element) {
+/**
+ * Checks if two dom rects are overlapping or not.
+ */
+export function areOverlapping(elementA: Element, elementB: Element): boolean {
   const rectA = elementA.getBoundingClientRect(),
     rectB = elementB.getBoundingClientRect();
 
@@ -37,4 +34,46 @@ export function areOverlapping(elementA: Element, elementB: Element) {
     rectA.left + rectA.width < rectB.left ||
     rectA.left > rectB.left + rectB.width
   );
+}
+
+/**
+ * Merges two objects deeply and returns a new object, useful for setting defaults.
+ */
+export function mergeDefaults<T extends object>(
+  obj: Partial<T>,
+  defaults: T
+): T {
+  const result = { ...defaults };
+
+  for (const key in obj) {
+    const objValue = obj[key];
+    const defaultValue = defaults[key];
+
+    if (objValue === undefined) continue;
+
+    if (
+      defaultValue &&
+      objValue &&
+      typeof defaultValue === "object" &&
+      typeof objValue === "object" &&
+      !Array.isArray(defaultValue) &&
+      !Array.isArray(objValue)
+    ) {
+      result[key] = mergeDefaults(defaultValue, objValue) as T[Extract<
+        keyof T,
+        string
+      >];
+    } else {
+      result[key] = objValue as T[typeof key];
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Creates a globally unique random number id for any kind of object
+ */
+export function getNewObjectId(): number {
+  return Math.round(Date.now() + Math.random() * 100_000);
 }

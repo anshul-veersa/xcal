@@ -1,0 +1,26 @@
+.xCal {
+  --slot-background: #fcfcfd;
+  --slot-hover-background: #f3f3f7;
+  --slot-gutter: 0%;
+
+  --content-breathing-space: 16px 0;
+
+  --side-bar-background: #fff;
+  --side-bar-width: 100px;
+  --column-min-width: 100px;
+
+  --header-background: #fff;
+
+  --separator-color: rgba(0, 0, 0, 0.2);
+  --separator-color-secondary: rgba(0, 0, 0, 0.05);
+  --separator-thickness: 1px;
+
+  --tile-gap: 1.5px;
+  --tile-min-width: 10px;
+
+  --month-header-background: #fbfbfb;
+
+  --day-grid-cell-min-height: 160px;
+  --day-grid-events-overlay-margin-top: 32px;
+  --day-grid-events-overlay-margin-bottom: 32px;
+}

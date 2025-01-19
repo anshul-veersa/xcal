@@ -1,4 +1,4 @@
-import type { Tile } from "@/core/tilers/day-tiler";
+import type { Tile } from "@/core/tilers/time-grid-tiler";
 import type { BackgroundEvent, ConfigOptions, TileEvent } from "@/types";
 
 export type DayViewEventTile<Event extends TileEvent> = {} & Tile<Event>;
@@ -11,9 +11,10 @@ export type DayViewConfig = {} & Pick<
   | "showAllDaySlot"
   | "showSlotIndicators"
   | "showSlotSeparator"
-  | "scrollTimeIntoView"
-  | "hourIndicatorLabelFormat"
+  | "initialTimeAtTop"
   | "slotHeight"
+  | "useTimeZonedEvents"
+  | "dayRange"
 >;
 
 export type DayViewHeaderItem = {

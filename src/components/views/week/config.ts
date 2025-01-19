@@ -1,67 +1,68 @@
-import type { RootConfig } from "@/types";
+import type { LocaleOptions, RootConfig } from "@/types";
 import type { WeekViewConfig } from "./types";
+import * as dfn from "@/core/temporal";
 
-export function adaptConfig(xCalConfig: RootConfig): WeekViewConfig {
-  const viewConfig = xCalConfig.views?.week ?? {};
+export const getConfigAdapter =
+  (locale: LocaleOptions) =>
+  (rootConfig: RootConfig): WeekViewConfig => {
+    const viewConfig = rootConfig.views?.week ?? {};
+    const defaults = getDefaults(locale);
 
-  return {
-    hourIndicatorLabelFormat:
-      viewConfig.hourIndicatorLabelFormat ??
-      xCalConfig.common?.hourIndicatorLabelFormat ??
-      defaults.hourIndicatorLabelFormat,
-    maxEventsPerSlot:
-      viewConfig.maxEventsPerSlot ??
-      xCalConfig.common?.maxEventsPerSlot ??
-      defaults.maxEventsPerSlot,
-    scrollTimeIntoView:
-      viewConfig.scrollTimeIntoView ??
-      xCalConfig.common?.scrollTimeIntoView ??
-      defaults.scrollTimeIntoView,
-    showAllDaySlot:
-      viewConfig.showAllDaySlot ??
-      xCalConfig.common?.showAllDaySlot ??
-      defaults.showAllDaySlot,
-    showCurrentTimeMarker:
-      viewConfig.showCurrentTimeMarker ??
-      xCalConfig.common?.showCurrentTimeMarker ??
-      defaults.showCurrentTimeMarker,
-    showDays: viewConfig.showDays ?? defaults.showDays,
-    showSlotIndicators:
-      viewConfig.showSlotIndicators ??
-      xCalConfig.common?.showSlotIndicators ??
-      defaults.showSlotIndicators,
-    showSlotSeparator:
-      viewConfig.showSlotSeparator ??
-      xCalConfig.common?.showSlotSeparator ??
-      defaults.showSlotSeparator,
-    slotDuration:
-      viewConfig.slotDuration ??
-      xCalConfig.common?.slotDuration ??
-      defaults.slotDuration,
-    slotHeight:
-      viewConfig.slotHeight ??
-      xCalConfig.common?.slotHeight ??
-      defaults.slotHeight,
+    return {
+      maxEventsPerSlot:
+        viewConfig.maxEventsPerSlot ??
+        rootConfig.config?.maxEventsPerSlot ??
+        defaults.maxEventsPerSlot,
+      initialTimeAtTop:
+        viewConfig.initialTimeAtTop ??
+        rootConfig.config?.initialTimeAtTop ??
+        defaults.initialTimeAtTop,
+      showAllDaySlot:
+        viewConfig.showAllDaySlot ??
+        rootConfig.config?.showAllDaySlot ??
+        defaults.showAllDaySlot,
+      showCurrentTimeMarker:
+        viewConfig.showCurrentTimeMarker ??
+        rootConfig.config?.showCurrentTimeMarker ??
+        defaults.showCurrentTimeMarker,
+      showDays: viewConfig.showDays ?? defaults.showDays,
+      showSlotIndicators:
+        viewConfig.showSlotIndicators ??
+        rootConfig.config?.showSlotIndicators ??
+        defaults.showSlotIndicators,
+      showSlotSeparator:
+        viewConfig.showSlotSeparator ??
+        rootConfig.config?.showSlotSeparator ??
+        defaults.showSlotSeparator,
+      slotDuration:
+        viewConfig.slotDuration ??
+        rootConfig.config?.slotDuration ??
+        defaults.slotDuration,
+      slotHeight:
+        viewConfig.slotHeight ??
+        rootConfig.config?.slotHeight ??
+        defaults.slotHeight,
+      dayRange: viewConfig.dayRange ?? defaults.dayRange,
+      useTimeZonedEvents:
+        viewConfig.useTimeZonedEvents ?? defaults.useTimeZonedEvents,
+    };
   };
-}
 
-const defaults: WeekViewConfig = {
-  hourIndicatorLabelFormat: "hh:mm",
-  maxEventsPerSlot: 30,
-  scrollTimeIntoView: new Date(),
-  showAllDaySlot: true,
-  showCurrentTimeMarker: true,
-  showDays: [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
-  ],
-  showSlotIndicators: false,
-  showSlotSeparator: false,
-  slotDuration: 30,
-  slotHeight: 32,
+const getDefaults = (locale: LocaleOptions): Readonly<WeekViewConfig> => {
+  return {
+    maxEventsPerSlot: 30,
+    initialTimeAtTop: dfn.now(locale),
+    showAllDaySlot: true,
+    showCurrentTimeMarker: true,
+    showDays: dfn.weekDays.slice(),
+    showSlotIndicators: false,
+    showSlotSeparator: false,
+    slotDuration: 30,
+    slotHeight: "32px",
+    useTimeZonedEvents: false,
+    dayRange: {
+      start: dfn.startOfDay(dfn.today(locale), locale),
+      end: dfn.endOfDay(dfn.today(locale), locale),
+    },
+  };
 };

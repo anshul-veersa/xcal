@@ -3,19 +3,23 @@ import type { MonthViewConfig } from "./types";
 
 export function adaptConfig(xCalConfig: RootConfig): MonthViewConfig {
   const viewConfig = xCalConfig.views?.month ?? {};
+  const defaults = getDefaults();
 
   return {
     maxEventsPerSlot:
       viewConfig.maxEventsPerSlot ??
-      xCalConfig.common?.maxEventsPerSlot ??
+      xCalConfig.config?.maxEventsPerSlot ??
       defaults.maxEventsPerSlot,
-    showSiblingMonthDatesEvents:
-      viewConfig.showSiblingMonthDatesEvents ??
-      defaults.showSiblingMonthDatesEvents,
+    showSiblingMonthDates:
+      viewConfig.showSiblingMonthDates ?? defaults.showSiblingMonthDates,
+    showWeekNumber: viewConfig.showWeekNumber ?? defaults.showWeekNumber,
   };
 }
 
-const defaults: MonthViewConfig = {
-  maxEventsPerSlot: 10,
-  showSiblingMonthDatesEvents: true,
+const getDefaults = (): MonthViewConfig => {
+  return {
+    maxEventsPerSlot: 10,
+    showSiblingMonthDates: true,
+    showWeekNumber: false,
+  };
 };

@@ -1,19 +1,15 @@
-import type { Tile } from "@/core/tilers/day-tiler";
+import type { WeekDay } from "@/core/temporal";
+import type { Tile } from "@/core/tilers/time-grid-tiler";
 import type { BackgroundEvent, ConfigOptions, TileEvent } from "@/types";
 
 export type WeekViewEventTile<Event extends TileEvent> = {} & Tile<Event>;
 
-type Weekday =
-  | "monday"
-  | "tuesday"
-  | "wednesday"
-  | "thursday"
-  | "friday"
-  | "saturday"
-  | "sunday";
-
 export type WeekViewConfig = {
-  showDays: Weekday[];
+  /**
+   * Days to show on the calendar as columns in week view.
+   * @default all
+   */
+  showDays: WeekDay[];
 } & Pick<
   ConfigOptions,
   | "slotDuration"
@@ -22,9 +18,10 @@ export type WeekViewConfig = {
   | "showAllDaySlot"
   | "showSlotIndicators"
   | "showSlotSeparator"
-  | "scrollTimeIntoView"
-  | "hourIndicatorLabelFormat"
+  | "initialTimeAtTop"
   | "slotHeight"
+  | "useTimeZonedEvents"
+  | "dayRange"
 >;
 
 export type WeekViewHeaderItem = {

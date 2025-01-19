@@ -4,8 +4,15 @@ import type {
   GroupViewConfig,
   MonthViewConfig,
 } from "@/components/views";
+import type { LocaleOptions } from "./locale";
 
-export type SlotDuration = 10 | 15 | 30 | 60;
+/**
+ * Allowed values for time slot duration
+ * to keep the slot height and alignment consistent.
+ */
+export type SlotDuration = 5 | 10 | 15 | 20 | 30 | 60;
+
+export type TimeRange = { start: Date; end: Date };
 
 export type ConfigOptions = {
   /**
@@ -14,22 +21,18 @@ export type ConfigOptions = {
    */
   slotDuration: SlotDuration;
   /**
-   * Height (in pixels) of a single time slot. Used for Day, Week, Group views
+   * Height (CSS height value) of a single time slot. Used for Day, Week, Group views
    * @default 40
    */
-  slotHeight: number;
+  slotHeight: string;
   /**
    * Maximum number of event tiles that can be shown in a single time slot.
    * @default Infinity
    */
   maxEventsPerSlot: number;
   /**
-   * Format of the hour start label.
-   * @default hh:mm e.g. 16:45
-   */
-  hourIndicatorLabelFormat: string;
-  /**
-   * Whether to show separator lines for each slot in Day, Week, Group views. Hour indication separators are shown by default.
+   * Whether to show separator lines for each slot in Day, Week, Group views.
+   * Hour indication separators are shown by default.
    * @default false
    */
   showSlotSeparator: boolean;
@@ -41,7 +44,6 @@ export type ConfigOptions = {
   /**
    * Whether to show current time marker in Day, Week, Group views.
    * @default true
-   *
    */
   showCurrentTimeMarker: boolean;
   /**
@@ -52,48 +54,60 @@ export type ConfigOptions = {
   showAllDaySlot: boolean;
   /**
    * Which slot start should the view render at in Day, Week, Group views.
+   * When passed a `Date`, it will show the closest slot indicator at the top.
+   * When passed a `number` expecting between 0-1, it will be used as a percentage
+   * of available time span to show it at the top.
    * @default start
    */
-  scrollTimeIntoView: Date;
+  initialTimeAtTop: Date | number;
   /**
-   * Sets the maximum viewport height of the calendar view.
-   * @default undefined
+   * When `true`, the events having timeZone specified
+   * will appear in their respective timeZones irrespective of locale timeZone.
+   * @default false
    */
-  maxViewHeight: number;
-};
-
-export type LocaleOptions = {
-  weekStartsOn: "monday" | "sunday";
+  useTimeZonedEvents: boolean;
+  /**
+   * Range (i.e. start and end) of a day in time grid based view
+   * @default full
+   */
+  dayRange: TimeRange;
 };
 
 type CommonConfig = Pick<
   ConfigOptions,
-  | "hourIndicatorLabelFormat"
   | "maxEventsPerSlot"
-  | "scrollTimeIntoView"
+  | "initialTimeAtTop"
   | "showAllDaySlot"
   | "showCurrentTimeMarker"
   | "showSlotIndicators"
   | "showSlotSeparator"
   | "slotDuration"
   | "slotHeight"
-  | "maxViewHeight"
+  | "useTimeZonedEvents"
+  | "dayRange"
 >;
 
 export interface RootConfig {
   /**
    * Common configuration across multiple views
    */
-  common?: Partial<CommonConfig>;
+  config?: Partial<CommonConfig>;
+  /**
+   * Locale options for the Calendar
+   */
   locale?: Partial<LocaleOptions>;
   /**
    * View specific configuration
    * @note Overrides common configuration
    */
   views?: {
+    /** View specific config for Day View. */
     day?: Partial<DayViewConfig>;
+    /** View specific config for Week View */
     week?: Partial<WeekViewConfig>;
+    /** View specific config for Month View */
     month?: Partial<MonthViewConfig>;
+    /** View specific config for Group View */
     group?: Partial<GroupViewConfig>;
   };
 }

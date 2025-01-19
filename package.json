@@ -1,67 +1,84 @@
 {
-  "name": "xcal",
-  "private": false,
+  "name": "@anshul-veersa/xcal",
   "version": "1.0.0",
   "type": "module",
-  "maintainers": [
-    {
-      "name": "Anshul Bansal",
-      "email": "anshulbansal02@outlook.com"
-    }
+  "keywords": [
+    "react",
+    "events",
+    "calendar"
   ],
   "files": [
-    "./dist"
+    "./dist",
+    "./README.md"
   ],
-  "main": "./dist/xcal.cjs.js",
-  "module": "./dist/xcal.es.js",
+  "main": "./dist/lib-calendar.cjs.js",
+  "module": "./dist/lib-calendar.es.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/xcal.cjs.js",
-      "import": "./dist/xcal.es.js"
+      "require": "./dist/lib-calendar.cjs.js",
+      "import": "./dist/lib-calendar.es.js"
+    },
+    "./styles": {
+      "import": "./dist/lib-calendar.css",
+      "require": "./dist/lib-calendar.css"
     }
   },
   "scripts": {
     "lint": "eslint .",
     "clean": "rm -rf ./dist",
     "build": "vite build",
-    "storybook": "storybook dev -p 6006"
+    "storybook": "storybook dev -p 6006",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "dependencies": {
+    "@date-fns/tz": "^1.2.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "rrule": "^2.8.1"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    }
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.3",
-    "@eslint/js": "^9.17.0",
+    "@eslint/js": "^9.18.0",
     "@faker-js/faker": "^9.3.0",
     "@storybook/addon-essentials": "^8.4.7",
     "@storybook/addon-interactions": "^8.4.7",
     "@storybook/blocks": "^8.4.7",
     "@storybook/react": "^8.4.7",
     "@storybook/react-vite": "^8.4.7",
-    "@types/node": "^22.10.5",
-    "@types/react": ">=18.0.0",
-    "@types/react-dom": ">=18.0.0",
+    "@types/node": "^22.10.6",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react-swc": "^3.7.2",
     "ajv": "^8.17.1",
-    "eslint": "^9.17.0",
+    "eslint": "^9.18.0",
     "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.16",
+    "eslint-plugin-react-refresh": "^0.4.18",
     "eslint-plugin-storybook": "^0.11.2",
     "globals": "^15.14.0",
-    "sass": "^1.83.1",
+    "lightningcss": "^1.29.1",
+    "sass": "^1.83.4",
     "storybook": "^8.4.7",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.19.0",
+    "typescript": "~5.7.3",
+    "typescript-eslint": "^8.20.0",
     "vite": "^6.0.7",
-    "vite-plugin-css-injected-by-js": "^3.5.2",
-    "vite-plugin-dts": "^4.4.0"
+    "vite-plugin-dts": "^4.5.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
   }
 }

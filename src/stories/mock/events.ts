@@ -11,7 +11,7 @@ import {
   subMinutes,
 } from "date-fns";
 
-const EVENT_SPAN = { min: 60, max: 420 };
+const EVENT_SPAN = { min: 60, max: 600 };
 
 export function createEvent<T>(
   between: { from: Date; to: Date },
@@ -34,7 +34,7 @@ export function createEvent<T>(
 export function createMonthData(
   date: Date,
   count: number
-): Array<TileEvent<unknown>> {
+): Array<TileEvent<{ title: string }>> {
   const [from, to] = [startOfMonth(date), endOfMonth(date)];
   return Array.from({ length: count }, () =>
     createEvent(
@@ -43,7 +43,14 @@ export function createMonthData(
         title: faker.airline.airplane().name,
       }
     )
-  );
+  ).map((e) => {
+    const shouldShift = Math.random() > 0.1;
+    return {
+      ...e,
+      timeZone: shouldShift ? "America/New_York" : undefined,
+      data: { title: shouldShift ? "America/New_York" : "Locale" },
+    };
+  });
 }
 
 export function createDayData(

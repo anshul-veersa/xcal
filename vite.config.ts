@@ -2,7 +2,6 @@ import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import dts from "vite-plugin-dts";
-import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 export default defineConfig({
   plugins: [
@@ -11,7 +10,6 @@ export default defineConfig({
       tsconfigPath: "./tsconfig.app.json",
       rollupTypes: true,
     }),
-    cssInjectedByJsPlugin(),
   ],
   resolve: {
     alias: {
@@ -19,10 +17,11 @@ export default defineConfig({
     },
   },
   build: {
+    sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
       formats: ["es", "cjs"],
-      fileName: (format) => `xcal.${format}.js`,
+      fileName: (format) => `lib-calendar.${format}.js`,
     },
     minify: "esbuild",
     rollupOptions: {
@@ -34,7 +33,8 @@ export default defineConfig({
         },
       },
     },
-    outDir: path.resolve(__dirname, "./dist"),
+    cssMinify: "lightningcss",
+    outDir: "dist",
     emptyOutDir: true,
   },
 

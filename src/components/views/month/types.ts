@@ -1,13 +1,24 @@
-import type { Tile } from "@/core/tilers/month-tiler";
+import type { Tile } from "@/core/tilers/day-grid-tiler";
 import type { BackgroundEvent, ConfigOptions, TileEvent } from "@/types";
 
 export type MonthViewTileEvent<Event extends TileEvent> = {} & Tile<Event>;
 
 export type MonthViewConfig = {
-  showSiblingMonthDatesEvents: boolean;
+  /**
+   * Shows the month dates from sibling or adjacent months.
+   * @default true
+   */
+  showSiblingMonthDates: boolean;
+  /**
+   * Shows the week's number for each week row on the left column.
+   * @default true
+   */
+  showWeekNumber: boolean;
 } & Pick<ConfigOptions, "maxEventsPerSlot">;
 
-export type MonthViewHeaderItem = {};
+export type MonthViewHeaderItem = {
+  weekDate: Date;
+};
 
 export type MonthViewTimeSlot<BackgroundEventData> = {
   date: Date;

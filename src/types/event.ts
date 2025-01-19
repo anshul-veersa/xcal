@@ -1,38 +1,64 @@
-export type EventID = number | string | bigint;
+export type EventID = number | string | bigint | symbol;
 
 /**
- *  Must haves for any kind of event
+ *  Base properties for any kind of event
  */
-export type BaseEvent = {
+export type BaseEvent<Data = unknown> = {
   id: EventID;
+  /**
+   * Priority is used to sort the events.
+   * In case two events happen at the same time,
+   * the one with higher priority (or lower number value) will be considered first.
+   * @default 0
+   */
   priority?: number;
-  recurrencePattern?: string;
+  /**
+   * User data for the event.
+   */
+  data: Data;
+  /**
+   * Start time of the event.
+   */
   startsAt: Date;
+  /**
+   * End time of the event.
+   */
   endsAt: Date;
+  /**
+   * iCalendar RFC 5545 compatible recurrence pattern string.
+   */
+  recurrencePattern?: string;
+  /**
+   * Represents the timeZone in which the event is occurring. \
+   * Used with calendar config option `useTimeZonedEvents` to view the events in their specified timeZone.
+   */
+  timeZone?: string;
 };
 
 /**
  * Primary kind of events that are shown as tiles
  */
 export type TileEvent<EventData = unknown> = {
-  /** User data for the event */
-  data?: EventData;
   config?: {
+    /**
+     * Allows the tile to be dragged and dropped to any other slot.
+     */
     isDraggable: boolean;
+    /**
+     * Allows the tile to be resizable using handles on the edges.
+     */
     isResizable: boolean;
   };
-} & BaseEvent;
+} & BaseEvent<EventData>;
 
 /**
- * Secondary kind of events that are shown in the background
+ * Secondary kind of events that are shown in the background,
+ * one per time slot
  */
 export type BackgroundEvent<EventData = unknown> = {
-  /**
-   * User data for the event
-   */
   data?: EventData;
   priority: number;
-} & BaseEvent;
+} & BaseEvent<EventData>;
 
 /**
  * Base tile, varies across views
@@ -40,8 +66,12 @@ export type BackgroundEvent<EventData = unknown> = {
 export type BaseEventTile<Event extends TileEvent> = {
   id: number;
   /**
-   * Specifies if the tile is continuing from start and/or end slots when it is clamped
+   * Specifies if the tile is continuing from start and/or end slots
+   * when it is clamped inside the view
    */
   continuous: { start: boolean; end: boolean };
+  /**
+   * Event represented by the Tile
+   */
   event: Event;
 };

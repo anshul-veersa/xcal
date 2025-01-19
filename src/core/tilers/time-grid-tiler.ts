@@ -1,11 +1,16 @@
-import type { TimeUtils } from "@/core/temporal";
 import { arrayToMap, clamp } from "@/core/utils";
-import type { BaseEventTile, TileEvent } from "@/types";
+import type {
+  BaseEvent,
+  BaseEventTile,
+  LocaleOptions,
+  TimeRange,
+} from "@/types";
+import * as dfn from "@/core/temporal";
 
 /**
- * Day view tile representaion
+ * Day view tile representation
  */
-export type Tile<Event extends TileEvent> = {
+export type Tile<Event extends BaseEvent> = {
   columnIndex: number;
   /**
    * Positional and dimensional properties of the tile
@@ -35,42 +40,37 @@ export type Tile<Event extends TileEvent> = {
   };
 } & BaseEventTile<Event>;
 
-type Column<Event extends TileEvent> = {
+type Column<Event extends BaseEvent> = {
   bottomEnd: Date;
   lastTile: Tile<Event>;
 };
 
 type TilerConfig = {
-  /** Limit the maximum number of events that can appear in a single row */
+  /** Limit the maximum number of events that can appear in a single row. */
   maxPerSlot: number;
-  /** Length or duration of a single slot in minutes */
+  /** Length or duration of a single slot in minutes. */
   slotDuration: number;
+  /** Uses timezone from the event instead of locale one. */
+  useEventTimeZone: boolean;
 };
 
 const UNSET_VALUE = -1;
 
-export class DayTiler<Event extends TileEvent> {
-  private slotsInDay: number;
-  private range: { start: Date; end: Date } = {
-    start: new Date(),
-    end: new Date(),
-  };
+export class TimeGridTiler<Event extends BaseEvent> {
   constructor(
     private readonly config: TilerConfig,
-    private readonly time: TimeUtils
-  ) {
-    this.slotsInDay = Math.floor(
-      this.time.minutesInDay / this.config.slotDuration
-    );
+    private readonly locale: LocaleOptions
+  ) {}
+
+  get slotsInDay() {
+    return dfn.MINUTES_IN_A_DAY / this.config.slotDuration;
   }
 
-  private getYOffset(time: Date, bound: "start" | "end"): number {
-    const offsetMinutes = this.time.getTimeOffsetFromDateInMinutes(
-      this.range.start,
-      time
-    );
-    const clampedOffset = clamp(0, this.time.minutesInDay, offsetMinutes);
-    const offset = (clampedOffset / this.time.minutesInDay) * this.slotsInDay;
+  private getYOffset(base: Date, time: Date, bound: "start" | "end"): number {
+    const offsetMinutes = dfn.differenceInMinutes(time, base);
+
+    const clampedOffset = clamp(0, dfn.MINUTES_IN_A_DAY, offsetMinutes);
+    const offset = (clampedOffset / dfn.MINUTES_IN_A_DAY) * this.slotsInDay;
 
     return bound === "start" ? Math.floor(offset) : Math.ceil(offset);
   }
@@ -78,26 +78,34 @@ export class DayTiler<Event extends TileEvent> {
   /**
    * Creates a tile for each of the event
    */
-  private createTiles(events: Event[]): Tile<Event>[] {
-    const tiles: Tile<Event>[] = events.map((event, i) => ({
-      id: i + 1,
-      event,
-      link: {
-        next: new Set(),
-        prev: new Set(),
-      },
-      columnIndex: UNSET_VALUE,
-      geometry: {
-        xOffset: UNSET_VALUE,
-        width: UNSET_VALUE,
-        yStart: this.getYOffset(event.startsAt, "start"),
-        yEnd: this.getYOffset(event.endsAt, "end"),
-      },
-      continuous: {
-        start: this.time.isBefore(event.startsAt, this.range.start),
-        end: this.time.isAfter(event.endsAt, this.range.end),
-      },
-    }));
+  private createTilesBetween(events: Event[], range: TimeRange): Tile<Event>[] {
+    const tiles: Tile<Event>[] = events.map((event, i) => {
+      let [eventStart, eventEnd] = [event.startsAt, event.endsAt];
+      if (this.config.useEventTimeZone && event.timeZone) {
+        eventStart = dfn.inTz(eventStart, event.timeZone);
+        eventEnd = dfn.inTz(eventEnd, event.timeZone);
+      }
+
+      return {
+        id: i + 1,
+        event,
+        link: {
+          next: new Set(),
+          prev: new Set(),
+        },
+        columnIndex: UNSET_VALUE,
+        geometry: {
+          xOffset: UNSET_VALUE,
+          width: UNSET_VALUE,
+          yStart: this.getYOffset(range.start, eventStart, "start"),
+          yEnd: this.getYOffset(range.start, eventEnd, "end"),
+        },
+        continuous: {
+          start: dfn.isBefore(eventStart, range.start),
+          end: dfn.isAfter(eventEnd, range.end),
+        },
+      };
+    });
 
     const visibleTiles = tiles.filter(
       (t) => t.geometry.yStart !== t.geometry.yEnd
@@ -194,31 +202,19 @@ export class DayTiler<Event extends TileEvent> {
   }
 
   /**
-   * Gets the array of tiles of events for a given date with layouting details
+   * Gets the array of tiles of events for a given date with layout details
    */
-  getLayoutTiles(events: Event[], options: { date: Date }): Tile<Event>[] {
-    this.range = {
-      start: this.time.startOfDay(options.date),
-      end: this.time.endOfDay(options.date),
-    };
-
+  getLayoutTiles(
+    events: Event[],
+    options: { range: TimeRange }
+  ): Tile<Event>[] {
     // Splits the recurring events into individual occurrences/events
-    const eventOccurrences = events.flatMap((event) => {
-      if (!event.recurrencePattern) return [event];
-      const rrule = this.time.parseRecurrencePattern(event.recurrencePattern);
-      const occurrences = rrule.between(this.range.start, this.range.end, true);
-      return occurrences.map((occurrence) => ({
-        ...event,
-        startsAt: occurrence,
-        endsAt: new Date(
-          occurrence.getTime() +
-            (event.endsAt.getTime() - event.startsAt.getTime())
-        ),
-      }));
-    });
+    const eventOccurrences = events.flatMap((event) =>
+      dfn.getOccurrencesBetween(options.range, event, this.locale)
+    );
 
     // Create tiles from events
-    const eventTiles = this.createTiles(eventOccurrences);
+    const eventTiles = this.createTilesBetween(eventOccurrences, options.range);
 
     // Arrange tiles by earliest and lengthiest first
     eventTiles.sort(
@@ -343,7 +339,7 @@ class ConnectedComponents<Node extends NodeType> {
 
   /**
    * For all the nodes, gets all the unique longest paths
-   * such that each node appears atleast one time in any of the longest path
+   * such that each node appears at least one time in any of the longest path
    */
   getLongestPaths() {
     const seen = new Set<string>();

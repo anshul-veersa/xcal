@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { XCal } from "@/components/root/x-cal";
+import { XCal } from "../components/root/x-cal";
 
 import { createDayData, createMonthData } from "./mock/events";
 import { DayViewTile, MonthViewTile } from "./auxiliary-components";
@@ -8,8 +8,6 @@ import { DayViewTile, MonthViewTile } from "./auxiliary-components";
 const meta = {
   title: "XCal",
   component: XCal,
-  tags: ["autodocs"],
-  argTypes: {},
 } satisfies Meta<typeof XCal>;
 
 export default meta;
@@ -20,12 +18,9 @@ export const DayView: Story = {
     view: "day",
     date: new Date(),
     backgroundEvents: [],
-    events: createDayData(new Date(), 20),
-    renderEventTile: DayViewTile as any,
-    common: { maxViewHeight: 500 },
-    onSlotClick: (slot) => {
-      console.log("Slot Clicked", slot);
-    },
+    events: createDayData(new Date(), 10),
+    style: { "--max-view-height": "620px" },
+    renderEventTile: DayViewTile,
   },
 };
 
@@ -34,11 +29,13 @@ export const WeekView: Story = {
     view: "week",
     date: new Date(),
     backgroundEvents: [],
-    events: createMonthData(new Date(), 100),
-    renderEventTile: DayViewTile as any,
-    common: { maxViewHeight: 500 },
-    onSlotClick: (slot) => {
-      console.log("Slot Clicked", slot);
+    events: createMonthData(new Date(), 10),
+    renderEventTile: DayViewTile,
+    style: { "--max-view-height": "620px" },
+    config: {
+      showSlotIndicators: true,
+      showSlotSeparator: true,
+      useTimeZonedEvents: true,
     },
   },
 };
@@ -48,7 +45,31 @@ export const MonthView: Story = {
     view: "month",
     date: new Date(),
     backgroundEvents: [],
+    style: { "--max-view-height": "620px" },
     events: createMonthData(new Date(), 100),
-    renderEventTile: MonthViewTile as any,
+    renderEventTile: MonthViewTile,
+  },
+};
+
+export const GroupView: Story = {
+  args: {
+    view: "group",
+    date: new Date(),
+    backgroundEvents: [],
+    style: { "--max-view-height": "620px" },
+    events: createMonthData(new Date(), 200),
+    renderEventTile: DayViewTile,
+    views: {
+      group: {
+        groupSelector: (event) => {
+          return event.data.title;
+        },
+      },
+    },
+    config: {
+      useTimeZonedEvents: true,
+      showSlotSeparator: false,
+      slotDuration: 20,
+    },
   },
 };
