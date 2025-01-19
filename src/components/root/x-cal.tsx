@@ -1,7 +1,7 @@
 import clsx from "clsx";
 
 import type { RootConfig, CalendarData, RenderFunctions } from "@/types";
-import { mergeDefaults } from "@/core/utils";
+import { genericForwardRef, mergeDefaults } from "@/core/utils";
 import {
   ConfigProvider,
   RendererProvider,
@@ -26,10 +26,11 @@ type XCalProps<EventData, BackgroundEventData> = RootConfig &
 /**
  * Root component to use XCal Events Calendar
  */
-export function XCal<EventData, BackgroundEventData>(
+
+const XCal_ = <EventData, BackgroundEventData>(
   props: XCalProps<EventData, BackgroundEventData>,
   ref: React.Ref<HTMLDivElement>
-) {
+) => {
   const ActiveView = Views[props.view] ?? defaults.view;
 
   const localeWithDefaults = mergeDefaults(props.locale ?? {}, defaults.locale);
@@ -58,4 +59,6 @@ export function XCal<EventData, BackgroundEventData>(
       </LocaleProvider>
     </ConfigProvider>
   );
-}
+};
+
+export const XCal = genericForwardRef(XCal_);

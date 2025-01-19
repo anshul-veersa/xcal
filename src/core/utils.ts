@@ -1,3 +1,5 @@
+import { forwardRef } from "react";
+
 /**
  * Converts an array to map of key:value,
  * any key appearing twice will be overrided by the last value
@@ -76,4 +78,14 @@ export function mergeDefaults<T extends object>(
  */
 export function getNewObjectId(): number {
   return Math.round(Date.now() + Math.random() * 100_000);
+}
+
+/**
+ * Utility to create generic ref forwarded component.
+ */
+export function genericForwardRef<T, P = unknown>(
+  render: (props: P, ref: React.Ref<T>) => React.ReactNode
+): (props: P & React.RefAttributes<T>) => React.ReactNode {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return forwardRef(render as any) as any;
 }
