@@ -28,6 +28,12 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      # Automatically update version based on git tag
+      - name: Set version from git tag
+        run: |
+          VERSION=$(echo $GITHUB_REF | sed 's/refs\/tags\/v//')
+          pnpm version $VERSION --no-git-tag-version
+
       - name: Authenticate to GitHub Packages
         run: |
           echo "@anshul-veersa:registry=https://npm.pkg.github.com" > ~/.npmrc
