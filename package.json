@@ -28,7 +28,7 @@
       "require": "./dist/lib-calendar.cjs.js",
       "import": "./dist/lib-calendar.es.js"
     },
-    "./styles": {
+    "./styles.css": {
       "import": "./dist/lib-calendar.css",
       "require": "./dist/lib-calendar.css"
     }
