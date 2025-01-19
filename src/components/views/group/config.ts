@@ -4,42 +4,42 @@ import * as dfn from "@/core/temporal";
 
 export const getConfigAdapter =
   (locale: LocaleOptions) =>
-  (xCalConfig: RootConfig): GroupViewConfig => {
-    const viewConfig = xCalConfig.views?.group ?? {};
+  (rootConfig: RootConfig): GroupViewConfig => {
+    const viewConfig = rootConfig.views?.group ?? {};
     const defaults = getDefaults(locale);
 
     return {
       maxEventsPerSlot:
         viewConfig.maxEventsPerSlot ??
-        xCalConfig.config?.maxEventsPerSlot ??
+        rootConfig.config?.maxEventsPerSlot ??
         defaults.maxEventsPerSlot,
       initialTimeAtTop:
         viewConfig.initialTimeAtTop ??
-        xCalConfig.config?.initialTimeAtTop ??
+        rootConfig.config?.initialTimeAtTop ??
         defaults.initialTimeAtTop,
       showAllDaySlot:
         viewConfig.showAllDaySlot ??
-        xCalConfig.config?.showAllDaySlot ??
+        rootConfig.config?.showAllDaySlot ??
         defaults.showAllDaySlot,
       showCurrentTimeMarker:
         viewConfig.showCurrentTimeMarker ??
-        xCalConfig.config?.showCurrentTimeMarker ??
+        rootConfig.config?.showCurrentTimeMarker ??
         defaults.showCurrentTimeMarker,
       showSlotIndicators:
         viewConfig.showSlotIndicators ??
-        xCalConfig.config?.showSlotIndicators ??
+        rootConfig.config?.showSlotIndicators ??
         defaults.showSlotIndicators,
       showSlotSeparator:
         viewConfig.showSlotSeparator ??
-        xCalConfig.config?.showSlotSeparator ??
+        rootConfig.config?.showSlotSeparator ??
         defaults.showSlotSeparator,
       slotDuration:
         viewConfig.slotDuration ??
-        xCalConfig.config?.slotDuration ??
+        rootConfig.config?.slotDuration ??
         defaults.slotDuration,
       slotHeight:
         viewConfig.slotHeight ??
-        xCalConfig.config?.slotHeight ??
+        rootConfig.config?.slotHeight ??
         defaults.slotHeight,
       dayRange: viewConfig.dayRange ?? defaults.dayRange,
       useTimeZonedEvents:

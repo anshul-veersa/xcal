@@ -23,11 +23,11 @@ pnpm add event-calendar
 
 
 ## Usage
-The library exports a single component, XCal, which you can use to display the calendar. All configurations are handled via props.
+The library exports a single component, `XCal`, which you can use to display the calendar. All configurations are handled via props.
 
 
 > [!IMPORTANT]
->  Wrap the XCal component inside a React.Suspense boundary, as the views are loaded lazily.
+>  Wrap the `<XCal />` component inside a React.Suspense boundary, as the views are loaded lazily.
 
 #### Minimal Usage Example
 ```tsx

@@ -2,6 +2,14 @@
   "name": "@anshul-veersa/xcal",
   "description": "Event calendar component for React",
   "version": "0.0.9",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/@anshul-veersa/xcal.git"
+  },
+  "bugs": {
+    "url": "https://github.com/@anshul-veersa/xcal/issues"
+  },
+  "homepage": "https://github.com/@anshul-veersa/xcal#readme",
   "type": "module",
   "keywords": [
     "react",

@@ -1,14 +1,14 @@
 import type { RootConfig } from "@/types";
 import type { MonthViewConfig } from "./types";
 
-export function adaptConfig(xCalConfig: RootConfig): MonthViewConfig {
-  const viewConfig = xCalConfig.views?.month ?? {};
+export function adaptConfig(rootConfig: RootConfig): MonthViewConfig {
+  const viewConfig = rootConfig.views?.month ?? {};
   const defaults = getDefaults();
 
   return {
     maxEventsPerSlot:
       viewConfig.maxEventsPerSlot ??
-      xCalConfig.config?.maxEventsPerSlot ??
+      rootConfig.config?.maxEventsPerSlot ??
       defaults.maxEventsPerSlot,
     showSiblingMonthDates:
       viewConfig.showSiblingMonthDates ?? defaults.showSiblingMonthDates,
