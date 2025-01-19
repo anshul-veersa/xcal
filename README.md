@@ -1,29 +1,33 @@
 # Event Calendar React Component
 
 ## Features
-- **Customizable** - Using render functions, different parts of the calendar can be custom made. Also allows configuring of styles using css variables.
-- **Timezone Support** - Supports calendar wide timezone as well as per event timezone.
-- **Lightweight** - Each view is just a few KBs in size.
+- **Customizable**: Easily customize different parts of the calendar using render functions. Configure styles with CSS variables for full flexibility.
+- **Timezone Support**: Supports both a global timezone for the entire calendar and individual timezones for each event.
+- **Lightweight**: The calendar's views are optimized to be small, with each view only a few KBs in size.
 
 ## Available Views
-### Month View
-Displays given events in a day grid for a given month.
+- **Month View**: Displays events within a day grid for a specific month.
+- **Week View**: A time-based grid view that shows events for each day of the selected week.
+- **Day View**: A time-based grid view that displays events for the selected day.
+- **Group View**: Groups events using a group selector. Currently available only as a time grid view.
 
-### Week View
-A time grid view showing events for each day of the given week.
+## Installation
 
-### Day View
-A time grid view showing events for the given day.
+First, install the component via npm or yarn:
 
-### Group View
-Display given events under groups using group selector. Currently only available as time grid.
+```bash
+npm install event-calendar
+# or
+pnpm add event-calendar
+```
 
 
 ## Usage
-The library exports only a single component to use the calendar. All the options are configurable using props. 
+The library exports a single component, XCal, which you can use to display the calendar. All configurations are handled via props.
 
 
-> The component needs to be wrapped inside a `React.Suspense` boundary because the views are lazily loaded
+> [!IMPORTANT]
+>  Wrap the XCal component inside a React.Suspense boundary, as the views are loaded lazily.
 
 #### Minimal Usage Example
 ```tsx

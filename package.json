@@ -1,5 +1,6 @@
 {
   "name": "@anshul-veersa/xcal",
+  "description": "Event calendar component for React",
   "version": "0.0.9",
   "type": "module",
   "keywords": [
