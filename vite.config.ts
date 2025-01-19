@@ -22,6 +22,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.ts"),
       formats: ["es", "cjs"],
       fileName: (format) => `lib-calendar.${format}.js`,
+      cssFileName: "lib-calendar",
     },
     minify: "esbuild",
     rollupOptions: {

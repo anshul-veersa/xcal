@@ -20,7 +20,8 @@ type XCalProps<EventData, BackgroundEventData> = RootConfig &
     Pick<CalendarData<EventData, BackgroundEventData>, "backgroundEvents">
   > & {
     className?: string;
-  } & { style?: React.CSSProperties };
+    style?: React.CSSProperties;
+  };
 
 /**
  * Root component to use XCal Events Calendar
