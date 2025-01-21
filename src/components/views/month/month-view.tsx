@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
 import { useConfig, useData, useLocale, useRenderer } from "@/providers";
 import { DayGridTiler } from "@/core/tilers/day-grid-tiler";
@@ -96,75 +96,92 @@ export default function MonthView() {
     return layoutTiles;
   }, [calendarDates, data.events, tiler]);
 
+  const backgroundEventsByDate = useMemo(() => {
+    const backgroundEventOccurrences = data.backgroundEvents
+      .flatMap((event) =>
+        dfn.getOccurrencesBetween(
+          { start: calendarDates.at(0)!.date, end: calendarDates.at(-1)!.date },
+          event,
+          locale
+        )
+      )
+      .toSorted((e1, e2) => e2.priority - e1.priority);
+  }, [data.backgroundEvents, locale, calendarDates]);
+
   return (
-    <div className={s.monthView}>
-      <div className={s.monthLayout}>
-        <header className={s.monthHeader}>
-          {weekDays.map(
-            (weekDay) =>
-              renderer.renderHeaderItem?.({
-                view: "month",
-                data: { weekDate: weekDay.date },
-              }) ?? (
-                <div
-                  className={s.headerItem}
-                  key={weekDay.day}
-                  data-week-day={weekDay.label}
-                >
-                  {weekDay.label}
-                </div>
-              )
-          )}
-        </header>
-
-        <div className={s.monthWeeks}>
-          {monthWeeks.map((week) => (
-            <>
-              <div
-                key={week.id}
-                className={s.monthWeek}
-                data-week={week.weekLabel}
-              >
-                <div className={s.weekDays}>
-                  {week.dates.map((date) => (
-                    <div
-                      key={date.id}
-                      data-today={date.isToday ? "" : undefined}
-                      data-date={date.dayLabel}
-                      className={s.dayCell}
-                    >
-                      {renderer.renderTimeSlot?.({
-                        view: "month",
-                        data: { backgroundEvents: [], date: date.date },
-                      }) ?? (
-                        <>
-                          <div className={s.dayCellInfo}>
-                            <span className={s.dayLabel}>{date.dayLabel}</span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                <div className={s.weekEventsOverlay}>
-                  {layoutEventTiles[week.id].eventTiles.map((tile) => (
-                    <div
-                      key={tile.id}
-                      className={s.eventTile}
-                      style={{
-                        gridColumnStart: tile.geometry.xStart + 1,
-                        gridColumnEnd: tile.geometry.xEnd + 2,
-                      }}
-                    >
-                      {renderer.renderEventTile({ view: "month", data: tile })}
-                    </div>
-                  ))}
-                </div>
+    <div data-xc-element='month-layout' className={s.monthLayout}>
+      <header data-xc-element='month-header' className={s.monthHeader}>
+        {weekDays.map((weekDay) => (
+          <React.Fragment key={weekDay.day}>
+            {renderer.renderHeaderItem?.({
+              view: "month",
+              data: { weekDate: weekDay.date },
+            }) ?? (
+              <div className={s.headerItem} data-week-day={weekDay.label}>
+                {weekDay.label}
               </div>
-            </>
-          ))}
-        </div>
+            )}
+          </React.Fragment>
+        ))}
+      </header>
+
+      <div data-xc-element='day-grid-layout' className={s.monthWeeks}>
+        {monthWeeks.map((week) => (
+          <div
+            data-xc-element='day-grid-week-days'
+            key={week.id}
+            className={s.monthWeek}
+            data-week={week.weekLabel}
+          >
+            <div
+              data-xc-element='day-grid-week-days-slots-layer'
+              className={s.weekDays}
+            >
+              {week.dates.map((date) => (
+                <div
+                  data-xc-element='day-grid-week-day-cell'
+                  key={date.id}
+                  data-today={date.isToday ? "" : undefined}
+                  data-date={date.dayLabel}
+                  className={s.dayCell}
+                >
+                  {renderer.renderTimeSlot?.({
+                    view: "month",
+                    data: { backgroundEvents: [], date: date.date },
+                  }) ?? (
+                    <>
+                      <div
+                        data-xc-element='day-grid-week-day-cell-header'
+                        className={s.dayCellHeader}
+                      >
+                        <span className={s.dayLabel}>{date.dayLabel}</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div
+              data-xc-element='day-grid-week-days-events-layer'
+              className={s.weekEventsOverlay}
+            >
+              {layoutEventTiles[week.id].eventTiles.map((tile) => (
+                <div
+                  data-xc-element='day-grid-event-tile'
+                  key={tile.id}
+                  className={s.eventTile}
+                  style={{
+                    gridColumnStart: tile.geometry.xStart + 1,
+                    gridColumnEnd: tile.geometry.xEnd + 2,
+                  }}
+                >
+                  {renderer.renderEventTile({ view: "month", data: tile })}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

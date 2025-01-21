@@ -8,6 +8,7 @@
   width: 100%;
   display: flex;
   background-color: var(--month-header-background);
+  border-bottom: 1px solid var(--separator-color);
   text-align: right;
 
   .headerItem {
@@ -94,12 +95,12 @@
   &:hover {
     background-color: var(--slot-hover-background);
 
-    .dayCellInfo {
+    .dayCellHeader {
       background-color: var(--slot-hover-background);
     }
   }
 
-  &Info {
+  &Header {
     width: 100%;
     padding: 6px 12px;
     height: 32px;
