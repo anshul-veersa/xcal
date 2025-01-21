@@ -34,7 +34,7 @@ export class DayGridTiler<Event extends BaseEvent> {
     private readonly locale: LocaleOptions
   ) {}
 
-  private getEventPriority(event: Event) {
+  private getEventSpan(event: Event) {
     return dfn.numberOfDaysBetween(
       {
         start: event.startsAt,
@@ -64,7 +64,7 @@ export class DayGridTiler<Event extends BaseEvent> {
       (e1, e2) =>
         +dfn.normalizeToDate(e1.startsAt, this.locale) -
           +dfn.normalizeToDate(e2.startsAt, this.locale) ||
-        this.getEventPriority(e2) - this.getEventPriority(e1)
+        this.getEventSpan(e2) - this.getEventSpan(e1)
     );
 
     /** A map of events keyed by their start date. */
@@ -72,17 +72,6 @@ export class DayGridTiler<Event extends BaseEvent> {
       eventsSorted,
       (event) => this.dateKeyFn(event.startsAt)
     );
-
-    const eventsProcessed = {
-      records: {} as Record<string, number | undefined>,
-      getFor(date: string) {
-        return this.records[date] ?? 0;
-      },
-      incFor(date: string) {
-        if (!this.records[date]) this.records[date] = 0;
-        this.records[date]!++;
-      },
-    };
 
     /** Layout of events */
     const eventSeries: Record<string, { eventTiles: Tile<Event>[] }> =
@@ -98,13 +87,30 @@ export class DayGridTiler<Event extends BaseEvent> {
           .map((d) => [dfn.getWeek(d, this.locale), { eventTiles: [] }])
       );
 
-    let eventsTouched = 0;
-    let currentDay = calendarStartDate;
+    const eventsProcessed = {
+      records: {} as Record<string, number | undefined>,
+      getFor(date: string) {
+        return this.records[date] ?? 0;
+      },
+      incFor(date: string) {
+        if (!this.records[date]) this.records[date] = 0;
+        this.records[date]!++;
+      },
+    };
 
-    while (eventsTouched < eventsSorted.length) {
+    let numberOfEventsTouched = 0;
+    let currentDay = calendarStartDate;
+    // Checks for empty cycle when arranging event series.
+    // An empty cycle is when currentDay moves to starting day
+    // and no event was processed in the last cycle.
+    let isEmptyCycle = true;
+
+    while (numberOfEventsTouched < eventsSorted.length) {
       // Move to next line, reiterate from first day
       if (dfn.isAfter(currentDay, range.end)) {
+        if (isEmptyCycle) break;
         currentDay = range.start;
+        isEmptyCycle = true;
         continue;
       }
 
@@ -112,7 +118,7 @@ export class DayGridTiler<Event extends BaseEvent> {
 
       const dayEventIndex = eventsProcessed.getFor(dateKey);
       if (dayEventIndex >= this.config.maxPerSlot) {
-        eventsTouched++;
+        numberOfEventsTouched++;
         continue;
       }
 
@@ -124,6 +130,7 @@ export class DayGridTiler<Event extends BaseEvent> {
         continue;
       }
 
+      isEmptyCycle = false;
       eventsProcessed.incFor(dateKey);
 
       let isContinuingFromLastWeek = false;
@@ -173,7 +180,7 @@ export class DayGridTiler<Event extends BaseEvent> {
         }
       }
 
-      eventsTouched++;
+      numberOfEventsTouched++;
     }
 
     return eventSeries;
